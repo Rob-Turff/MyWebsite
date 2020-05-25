@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Robert Turff</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/26767bdcd2.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'css/mainpage.css' %}">
+</head>
+<body>
+<div class="top-nav">
+    <div class="nav-links">
+        <a href="{% url 'home' %}">About</a>
+        <a href="{% url 'post_list' %}">Blog</a>
+        <a href="#Portfolio">Portfolio</a>
+        <a href="#CV">CV</a>
+        <a href="#Contact">Contact</a>
+    </div>
+
+    <div class="social-icon">
+        <a href="https://www.linkedin.com/in/robert-turff/" class="fab fa-linkedin"></a>
+        <a href="https://github.com/Rob-Turff" class="fab fa-github-square"></a>
+        <a href="/" class="fas fa-envelope"></a>
+    </div>
+</div>
+
+<div class="content container">
+    <div class="row">
+        <div class="col-md-8">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+</div>
+</body>
+</html>
