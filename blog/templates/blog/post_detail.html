@@ -3,13 +3,12 @@
 {% block content %}
     <div class="post">
         {% if post.published_date %}
-            <div class="date">
+            <div class="date" style="display:inline-block">
                 {{ post.published_date }}
             </div>
         {% endif %}
         {% if user.is_authenticated %}
-            <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span
-                    class="glyphicon glyphicon-pencil"></span></a>
+            <a class="blog-buttons" href="{% url 'post_edit' pk=post.pk %}"><button type="button" style="display:inline-block; float:right; margin: -10px -10px">Edit Post</button></a>
         {% endif %}
         <h2>{{ post.title }}</h2>
         <p>{{ post.text|linebreaksbr }}</p>
