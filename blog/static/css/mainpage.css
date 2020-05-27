@@ -2,12 +2,8 @@ body {
     background-color: #121212;
 }
 
-h1, h2, h3, h4, a{
-    font-family: 'Merriweather', Calibri;
-    color: #ffffff;
-}
-
-p, a {
+h1, h2, h3, h4, p, a, i {
+    font-family: 'Merriweather', serif;
     color: white;
 }
 
@@ -15,33 +11,39 @@ a:hover {
     color: #ff943f;
 }
 
+h1, h2, h3, h4 {
+    font-weight: bold;
+}
+
 .top-nav {
     background-color: black;
-    position: fixed;
-    width: 100%;
-    top: 0;
     padding: 15px 15px 15px 15px;
 }
 
-.nav-links a {
+.nav-link a {
     text-align: center;
     padding: 10px 15px;
     text-decoration: none;
     font-size: 18px;
 }
 
-.social-icon a {
-    float: right;
-    padding-left: 8px;
-    margin-top: -30px;
-    font-size: 36px;
+.social-icon i {
+    margin-left: 4px;
+}
+
+.social-icon i, .navbar-toggler-icon i {
+    font-size: 32px;
+}
+
+.social-icon i:hover, .navbar-toggler-icon i:hover {
+    color: #ff943f;
 }
 
 .content {
-    padding-top: 160px;
+    padding-top: 140px;
     /*max-width: 1000px;*/
-    width: 35%;
-    margin: auto;
+    /*max-width: 40%;*/
+    /*margin: auto;*/
 }
 
 .date p {
