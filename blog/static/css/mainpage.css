@@ -20,6 +20,10 @@ h1, h2, h3, h4 {
     padding: 15px 15px 15px 15px;
 }
 
+.navbar-brand img {
+    border-radius: 50%;
+}
+
 .nav-link a {
     text-align: center;
     padding: 10px 15px;
@@ -28,7 +32,7 @@ h1, h2, h3, h4 {
 }
 
 .social-icon i {
-    margin-left: 4px;
+    margin-left: 8px;
 }
 
 .social-icon i, .navbar-toggler-icon i {
@@ -40,10 +44,8 @@ h1, h2, h3, h4 {
 }
 
 .content {
-    padding-top: 140px;
-    /*max-width: 1000px;*/
-    /*max-width: 40%;*/
-    /*margin: auto;*/
+    padding-top: 100px;
+    max-width: 900px;
 }
 
 .date p {
@@ -60,14 +62,18 @@ h1, h2, h3, h4 {
 }
 
 .post {
-    background-color: #212121;
+    background-color: #262626;
     margin-bottom: 30px;
     padding: 20px 20px 20px 20px;
     border: 5px solid #7e8ce0;
 }
 
-.post h2 a:hover{
-    color: #7e8ce0;
+.post-container:hover {
+    background-color: #393939;
+}
+
+.post-container a:hover, a:link {
+    text-decoration: none;
 }
 
 .blog-buttons button {
@@ -81,4 +87,8 @@ h1, h2, h3, h4 {
 .blog-buttons button:hover {
     background-color: white;
     color: black;
+}
+
+.home-sections {
+    padding-top: 140px;
 }

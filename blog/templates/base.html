@@ -17,7 +17,10 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-sm fixed-top top-nav">
-    <a class="navbar-brand" href="{% url 'home' %}">(Picture)</a>
+    <a class="navbar-brand" href="{% url 'home' %}">
+        <!--TODO change picture -->
+        <img border="0" alt="Profile picture" src="{% static 'images/rob_profile_pic.jpg' %}" width="50" height="50">
+    </a>
     <button class="navbar-toggler mr-auto" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
             aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon">
@@ -41,9 +44,9 @@
         </ul>
     </div>
     <div class="social-icon d-flex flex-row order-2 order-sm-3">
+        <a href="#"><i class="fas fa-envelope"></i></a>
         <a href="https://www.linkedin.com/in/robert-turff/"><i class="fab fa-linkedin"></i></a>
         <a href="https://github.com/Rob-Turff"> <i class="fab fa-github-square"></i></a>
-        <a href="#"><i class="fas fa-envelope"></i></a>
     </div>
 </nav>
 
