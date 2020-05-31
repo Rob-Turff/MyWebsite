@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="project-detail">
+        <div class="container">
+            <div class="row">
+                {% for project in projects %}
+                    <a class="project-list-button" href="{% url 'project_detail' pk=project.pk %}">
+                        <button type="button" class="btn btn-outline-primary">{{ project.title }}</button>
+                    </a>
+                {% endfor %}
+                {% if user.is_authenticated %}
+                    <a class="admin-buttons" href="{% url 'post_new' %}">
+                        <button type="button">Add Project</button>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

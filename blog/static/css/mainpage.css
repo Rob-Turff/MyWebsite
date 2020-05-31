@@ -42,7 +42,6 @@ h1, h2, h3, h4 {
 
 .content {
     padding-top: 100px;
-    max-width: 900px;
 }
 
 .date p {
@@ -64,6 +63,11 @@ h1, h2, h3, h4 {
     padding: 20px 20px 20px 20px;
     border: 5px solid #7e8ce0;
     border-radius: 20px;
+}
+
+.post-list-container {
+    padding-left: 5vw;
+    padding-right: 5vw;
 }
 
 .post-container:hover {
@@ -89,4 +93,19 @@ h1, h2, h3, h4 {
 
 .home-sections {
     padding-top: 140px;
+}
+
+.project-list-button {
+    display: inline-block;
+    padding-right: 30px;
+    padding-top: 10px;
+}
+
+.project-list-button button {
+    color: #0f7dde;
+    border-color: #0f7dde;
+}
+
+.project-list-button button:hover {
+    background-color: #0c62af;
 }
