@@ -2,7 +2,7 @@
 
 {% block content %}
     {% if user.is_authenticated %}
-        <a class="blog-buttons" href="{% url 'post_new' %}">
+        <a class="admin-buttons" href="{% url 'post_new' %}">
             <button type="button">New Post</button>
         </a>
     {% endif %}

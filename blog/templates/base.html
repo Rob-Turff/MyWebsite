@@ -19,7 +19,7 @@
 <nav class="navbar navbar-expand-sm fixed-top top-nav">
     <a class="navbar-brand" href="{% url 'home' %}">
         <!--TODO change picture -->
-        <img border="0" alt="Profile picture" src="{% static 'images/rob_profile_pic.jpg' %}" width="50" height="50">
+        <img border="0" alt="Home" src="{% static 'images/rob_profile_pic.jpg' %}" width="50" height="50">
     </a>
     <button class="navbar-toggler mr-auto" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
             aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -28,12 +28,12 @@
         </span>
     </button>
     <div class="collapse navbar-collapse order-3 order-sm-2" id="navbarNavDropdown">
-        <ul class="navbar-nav mr-auto">
+        <ul class="navbar-nav mr-auto" id="bootstrap-overrides">
             <li class="nav-item active">
                 <a class="nav-link" href="{% url 'post_list' %}">Blog</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Portfolio</a>
+                <a class="nav-link" href="{% url 'project_detail' pk=1 %}">Portfolio</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">CV</a>
