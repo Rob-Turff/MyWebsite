@@ -9,13 +9,13 @@
     <div class="project-detail">
         <div class="container">
             <div class="row">
-                <div class="col-sm">
+                <div class="col-sm project-text">
                     <h2>{{ project.title }}</h2>
                     <p>{{ project.description }}</p>
                     <a href="{{ project.link }}">Link</a>
                 </div>
-                <div class="col-sm">
-                    <img src="{{ project.image.url }}" alt="Project image">
+                <div class="col-sm project-image">
+                    <img src="{{ project.image.url }}" class="img-fluid" alt="Project preview image">
                 </div>
             </div>
         </div>

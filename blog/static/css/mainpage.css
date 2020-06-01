@@ -1,19 +1,6 @@
-body {
-    background-color: #121212;
-}
-
-h1, h2, h3, h4, p, a, i {
-    font-family: 'Merriweather', serif;
-    color: white;
-}
-
-a:hover {
-    color: #ff943f;
-}
-
-h1, h2, h3, h4 {
-    font-weight: bold;
-}
+/* --------------------------------------------------------------------------------------------------- */
+/* Base page css */
+/* --------------------------------------------------------------------------------------------------- */
 
 .top-nav {
     background-color: black;
@@ -43,6 +30,43 @@ h1, h2, h3, h4 {
 .content {
     padding-top: 100px;
 }
+
+/* --------------------------------------------------------------------------------------------------- */
+/* Shared css */
+/* --------------------------------------------------------------------------------------------------- */
+
+body {
+    background-color: #121212;
+}
+
+h1, h2, h3, h4, p, a, i {
+    font-family: 'Merriweather', serif;
+    color: white;
+}
+
+a:hover {
+    color: #ff943f;
+}
+
+h1, h2, h3, h4 {
+    font-weight: bold;
+}
+
+.admin-buttons button {
+    color: white;
+    border: 2px solid white;
+    margin: 10px 10px 10px 0px;
+    padding: 5px 10px 5px 10px;
+    background-color: rgba(255,169,43,0);
+}
+
+.admin-buttons button:hover {
+    background-color: white;
+    color: black;
+}
+/* --------------------------------------------------------------------------------------------------- */
+/* Blog page css*/
+/* --------------------------------------------------------------------------------------------------- */
 
 .date p {
     color: #828282;
@@ -78,22 +102,10 @@ h1, h2, h3, h4 {
     text-decoration: none;
 }
 
-.admin-buttons button {
-    color: white;
-    border: 2px solid white;
-    margin: 10px 10px 10px 0px;
-    padding: 5px 10px 5px 10px;
-    background-color: rgba(255,169,43,0);
-}
 
-.admin-buttons button:hover {
-    background-color: white;
-    color: black;
-}
-
-.home-sections {
-    padding-top: 140px;
-}
+/* --------------------------------------------------------------------------------------------------- */
+/* Project page css*/
+/* --------------------------------------------------------------------------------------------------- */
 
 .project-list-button {
     display: inline-block;
@@ -108,4 +120,11 @@ h1, h2, h3, h4 {
 
 .project-list-button button:hover {
     background-color: #0c62af;
+}
+/* --------------------------------------------------------------------------------------------------- */
+/* Home page css*/
+/* --------------------------------------------------------------------------------------------------- */
+
+.home-sections {
+    padding-top: 140px;
 }
