@@ -22,7 +22,7 @@ class Project(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
     link = models.TextField()
-    image = models.ImageField(upload_to=settings.MEDIA_ROOT + 'images/projects/')
+    image = models.ImageField(upload_to=settings.MEDIA_ROOT + '/images/projects')
     created_date = models.DateTimeField(default=timezone.now)
     published_date = models.DateTimeField(blank=True, null=True)
 
