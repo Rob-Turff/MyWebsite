@@ -25,7 +25,6 @@ class Project(models.Model):
     image = models.ImageField(upload_to=settings.MEDIA_ROOT + '/images/projects/')
     created_date = models.DateTimeField(default=timezone.now)
     published_date = models.DateTimeField(blank=True, null=True)
-    active = models.BooleanField(default=False, blank=False)
 
     def publish(self):
         self.published_date = timezone.now()

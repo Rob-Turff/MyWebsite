@@ -68,9 +68,6 @@ h1, h2, h3, h4 {
 /* Blog page css*/
 /* --------------------------------------------------------------------------------------------------- */
 
-.date p {
-    color: #828282;
-}
 
 .save {
     float: right;
@@ -102,6 +99,9 @@ h1, h2, h3, h4 {
     text-decoration: none;
 }
 
+.date p {
+    color: #828282;
+}
 
 /* --------------------------------------------------------------------------------------------------- */
 /* Project page css*/
@@ -114,12 +114,20 @@ h1, h2, h3, h4 {
 }
 
 .project-list-button button {
-    color: #0f7dde;
-    border-color: #0f7dde;
+    color: #005399;
+    border-color: #005399;
 }
 
 .project-list-button button:hover {
-    background-color: #0c62af;
+    background-color: #084968;
+}
+
+.btn-outline-primary:not(:disabled):not(.disabled).active {
+    background-color: #084968;
+}
+
+.project-list-content {
+    padding-top: 20vh;
 }
 /* --------------------------------------------------------------------------------------------------- */
 /* Home page css*/

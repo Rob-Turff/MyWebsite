@@ -48,9 +48,14 @@ def post_edit(request, pk):
 
 
 def project_detail(request, pk):
-    project = get_object_or_404(Project, pk=pk)
-    return render(request, 'portfolio/project_detail.html', {'project': project})
+    projects = Project.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+    displayed_project = get_object_or_404(Project, pk=pk)
+    return render(request, 'portfolio/project_list.html',
+                  {'projects': projects, 'displayed_project': displayed_project})
+
 
 def project_list(request):
     projects = Project.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
-    return render(request, 'portfolio/project_list.html', {'projects': projects})
+    displayed_project = projects.first()
+    return render(request, 'portfolio/project_list.html',
+                  {'projects': projects, 'displayed_project': displayed_project})
