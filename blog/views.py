@@ -59,3 +59,6 @@ def project_list(request):
     displayed_project = projects.first()
     return render(request, 'portfolio/project_list.html',
                   {'projects': projects, 'displayed_project': displayed_project})
+
+def cv_home(request):
+    return render(request, 'CV/cv_home.html', {})

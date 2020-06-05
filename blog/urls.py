@@ -11,4 +11,5 @@ urlpatterns = [
     path('post/<int:pk>/edit/', views.post_edit, name='post_edit'),
     path('portfolio', views.project_list, name='project_list'),
     path('portfolio/<int:pk>', views.project_detail, name='project_detail'),
+    path('cv', views.cv_home, name='cv_home'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
