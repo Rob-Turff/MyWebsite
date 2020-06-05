@@ -2,10 +2,11 @@
 *~
 /.vscode
 __pycache__
-myvenv
 db.sqlite3
 /static
 .DS_Store
 .idea
 /tests/geckodriver.log
 /blog/login.txt
+/venv/
+/blog/geckodriver.log
