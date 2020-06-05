@@ -9,8 +9,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-
-    <title>Robert Turff</title>
+    <title>{% block title %} {% endblock %} | Robert Turff</title>
     <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/26767bdcd2.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{% static 'css/mainpage.css' %}">
@@ -30,7 +29,7 @@
     <div class="collapse navbar-collapse order-3 order-sm-2" id="navbarNavDropdown">
         <ul class="navbar-nav mr-auto" id="bootstrap-overrides">
             <li class="nav-item active">
-                <a class="nav-link" href="{% url 'post_list' %}">Blog</a>
+                <a class="nav-link" href="{% url 'post_list' %}" id="topnav-blog-button">Blog</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'project_list'%}">Portfolio</a>

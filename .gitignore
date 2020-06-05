@@ -8,3 +8,4 @@ db.sqlite3
 .DS_Store
 .idea
 /tests/geckodriver.log
+/blog/login.txt
