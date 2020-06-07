@@ -77,7 +77,6 @@ class AdminUserTests(StaticLiveServerTestCase):
         pTextOnPage = self.browser.find_elements_by_tag_name('p')
         self.assertTrue(any(text in t.text for t in pTextOnPage))
 
-
     def test_can_navigate_to_cv_page_and_edit_it(self):
         # Dave decides he wants to be the most powerful being in the universe
         # and so opens and logs into the admin login page
@@ -95,3 +94,30 @@ class AdminUserTests(StaticLiveServerTestCase):
         self.assertTrue(any('Work Experience' in h.text for h in headings))
         self.assertTrue(any('Projects' in h.text for h in headings))
         self.assertTrue(any('Additional Information' in h.text for h in headings))
+        # Dave decides to add to the eduction section first
+        self.browser.find_element_by_id('add-uni-year-button').click()
+        # Dave adds his first years grades to the page
+        textInput = self.browser.find_element_by_id('id_year')
+        text = 'First Year Results'
+        textInput.send_keys(text)
+        textInput = self.browser.find_element_by_id('id_grades')
+        gradesText = 'Introduction to tea drinking: 999%'
+        textInput.send_keys(gradesText)
+        textInput = self.browser.find_element_by_id('id_overall-grade')
+        overallGradesText = 'Overall Grade: 105% (Underflow Error Class)'
+        textInput.send_keys(overallGradesText)
+        self.browser.find_element_by_class_name('save').click()
+        time.sleep(0.25)
+        # Dave admires his handy work back on the main CV page
+        pOnPage = self.browser.find_elements_by_tag_name('p')
+        self.assertTrue(any(text in p.text for p in pOnPage))
+        self.assertTrue(any(gradesText in p.text for p in pOnPage))
+        self.assertTrue(any(overallGradesText in p.text for p in pOnPage))
+        # He realises he missed one of the grades and goes to add it
+        self.browser.find_element_by_id('edit-uni-year-button-1')
+        textInput = self.browser.find_element_by_id('id_grades')
+        newGradesText = '\nTea making workshop: 42%'
+        textInput.send_keys(newGradesText)
+        self.browser.find_element_by_class_name('save').click()
+        time.sleep(0.25)
+        self.assertTrue(any(gradesText + newGradesText in p.text for p in pOnPage))

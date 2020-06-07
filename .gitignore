@@ -10,3 +10,4 @@ db.sqlite3
 /functional_tests/login.txt
 /venv/
 /blog/geckodriver.log
+/geckodriver.log
