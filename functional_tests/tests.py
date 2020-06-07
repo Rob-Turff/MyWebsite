@@ -1,29 +1,28 @@
 import time
 
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from django.contrib.auth.models import User
+from django.test import Client
 from selenium import webdriver
-import unittest
 
 from selenium.webdriver.common.keys import Keys
 
 
-class AdminUserTests(unittest.TestCase):
-
+class AdminUserTests(StaticLiveServerTestCase):
     def setUp(self):
+        self.adminAccount = User.objects.create_superuser('testuser', 'testuser@test.com', 'password')
         self.browser = webdriver.Firefox()
 
     def tearDown(self):
         self.browser.quit()
 
     def login_to_admin_page(self):
-        self.browser.get('http://127.0.0.1:8000/admin/login/?next=/admin/')
+        self.browser.get(self.live_server_url + '/admin/login/?next=/admin/')
         # Dave types in the admin credentials
-        credentials = open('login.txt', 'r')
-        cookies = self.browser.get_cookies()
         usernameField = self.browser.find_element_by_id('id_username')
-        usernameField.send_keys(credentials.readline())
+        usernameField.send_keys(self.adminAccount.username)
         passwordField = self.browser.find_element_by_id('id_password')
-        passwordField.send_keys(credentials.readline())
-        credentials.close()
+        passwordField.send_keys('password')
         passwordField.send_keys(Keys.ENTER)
         time.sleep(0.25)
 
@@ -34,12 +33,10 @@ class AdminUserTests(unittest.TestCase):
         # Dave checks that he is now all powerful
         self.assertIn('Site administration | Django site admin', self.browser.title)
         # Dave navigates back to the home page of the website
-        self.browser.get('http://127.0.0.1:8000/')
-        time.sleep(0.25)
+        self.browser.get(self.live_server_url)
         # Dave, being an absolutely spiffing individual decides that he wants to make a post about yorkshire tea gold
         # and so presses the blog button in the top navigation bar
         self.browser.find_element_by_id('topnav-blog-button').click()
-        time.sleep(0.25)
         # He then checks the title of the page to make sure he is the right place because Dave hasn't had his
         # standard 15 cups of tea today and so is being extra careful
         self.assertIn('Blog | Robert Turff', self.browser.title)
@@ -66,7 +63,6 @@ class AdminUserTests(unittest.TestCase):
         self.assertIn(text, pText[1].text)
         # Dave decided he wanted to add ... to the end of the post text
         self.browser.find_element_by_id('edit-post-button').click()
-        time.sleep(0.25)
         titleInput = self.browser.find_element_by_id('id_title')
         self.assertIn(titleInput.text, title)
         textInput = self.browser.find_element_by_id('id_text')
@@ -76,30 +72,26 @@ class AdminUserTests(unittest.TestCase):
         time.sleep(0.25)
         # He then goes back to the main blog page to admire his masterwork
         self.browser.find_element_by_id("topnav-blog-button").click()
-        time.sleep(0.25)
         titlesOnPage = self.browser.find_elements_by_tag_name('h2')
         self.assertTrue(any(title in t.text for t in titlesOnPage))
         pTextOnPage = self.browser.find_elements_by_tag_name('p')
         self.assertTrue(any(text in t.text for t in pTextOnPage))
 
 
-    def test_can_navigate_to_blog_page_and_read_posts(self):
-        # Dave has heard great tales of the blog posts contained within this website, he goes to checkout the homepage
-        self.browser.get('http://localhost:8000')
-
-        # He notices the page title and the navigation links along the top of the page
-        self.assertIn('Home | Robert Turff', self.browser.title)
-        navLinks = self.browser.find_elements_by_class_name('nav-link')
-        self.assertTrue(any('Blog' in navLink.text for navLink in navLinks))
-        self.assertTrue(any('Portfolio' in navLink.text for navLink in navLinks))
-        self.assertTrue(any('CV' in navLink.text for navLink in navLinks))
-        self.assertTrue(any('Contact' in navLink.text for navLink in navLinks))
-
-        # Having seen the blog option he clicks it
-        self.browser.find_element_by_id('topnav-blog-button').click()
-        time.sleep(0.25)
-        self.assertIn('Blog | Robert Turff', self.browser.title)
-
-
-if __name__ == '__main__':
-    unittest.main(warnings='ignore')
+    def test_can_navigate_to_cv_page_and_edit_it(self):
+        # Dave decides he wants to be the most powerful being in the universe
+        # and so opens and logs into the admin login page
+        self.login_to_admin_page()
+        # Dave navigates back to the home page of the website
+        self.browser.get(self.live_server_url)
+        # During one of Daves many tea induced fever dreams he has learned some new skills he wishes to add to his CV
+        # thus he clicks on the CV button in the navigation bar
+        self.browser.find_element_by_id('topnav-cv-button').click()
+        self.assertIn('CV | Robert Turff', self.browser.title)
+        # Dave looks through the sections on the page before deciding which one to edit first
+        headings = self.browser.find_elements_by_tag_name('h1')
+        self.assertTrue(any('Eduction' in h.text for h in headings))
+        self.assertTrue(any('Tech Skills' in h.text for h in headings))
+        self.assertTrue(any('Work Experience' in h.text for h in headings))
+        self.assertTrue(any('Projects' in h.text for h in headings))
+        self.assertTrue(any('Additional Information' in h.text for h in headings))

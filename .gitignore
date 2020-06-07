@@ -7,6 +7,6 @@ db.sqlite3
 .DS_Store
 .idea
 /tests/geckodriver.log
-/blog/login.txt
+/functional_tests/login.txt
 /venv/
 /blog/geckodriver.log
