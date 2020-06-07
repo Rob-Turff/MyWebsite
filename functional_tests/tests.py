@@ -83,8 +83,8 @@ class AdminUserTests(StaticLiveServerTestCase):
         self.login_to_admin_page()
         # Dave navigates back to the home page of the website
         self.browser.get(self.live_server_url)
-        # During one of Daves many tea induced fever dreams he has learned some new skills he wishes to add to his CV
-        # thus he clicks on the CV button in the navigation bar
+        # During one of Daves many tea induced fever dreams he has learned some new skills he wishes to add to his cv
+        # thus he clicks on the cv button in the navigation bar
         self.browser.find_element_by_id('topnav-cv-button').click()
         self.assertIn('CV | Robert Turff', self.browser.title)
         # Dave looks through the sections on the page before deciding which one to edit first
@@ -103,12 +103,12 @@ class AdminUserTests(StaticLiveServerTestCase):
         textInput = self.browser.find_element_by_id('id_grades')
         gradesText = 'Introduction to tea drinking: 999%'
         textInput.send_keys(gradesText)
-        textInput = self.browser.find_element_by_id('id_overall-grade')
+        textInput = self.browser.find_element_by_id('id_overall_grade')
         overallGradesText = 'Overall Grade: 105% (Underflow Error Class)'
         textInput.send_keys(overallGradesText)
         self.browser.find_element_by_class_name('save').click()
         time.sleep(0.25)
-        # Dave admires his handy work back on the main CV page
+        # Dave admires his handy work back on the main cv page
         pOnPage = self.browser.find_elements_by_tag_name('p')
         self.assertTrue(any(text in p.text for p in pOnPage))
         self.assertTrue(any(gradesText in p.text for p in pOnPage))

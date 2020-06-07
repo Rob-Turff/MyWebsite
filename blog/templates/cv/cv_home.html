@@ -6,6 +6,11 @@
 
 {% block content %}
     <h1>Eduction</h1>
+    {% if user.is_authenticated %}
+            <a class="admin-buttons" href="{% url 'edu_new' %}" id="add-uni-year-button">
+                <button type="button">Add Year</button>
+            </a>
+    {% endif %}
     <h1>Tech Skills</h1>
     <h1>Work Experience</h1>
     <h1>Academic Projects</h1>

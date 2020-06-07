@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
-from .forms import PostForm
-from .models import Post, Project
+from .forms import PostForm, EduForm
+from .models import Post, Project, UniYear
 
 
 def home(request):
@@ -60,5 +60,31 @@ def project_list(request):
     return render(request, 'portfolio/project_list.html',
                   {'projects': projects, 'displayed_project': displayed_project})
 
+
 def cv_home(request):
-    return render(request, 'CV/cv_home.html', {})
+    return render(request, 'cv/cv_home.html', {})
+
+
+def cv_edu_new(request):
+    if request.method == "POST":
+        form = EduForm(request.POST)
+        if form.is_valid():
+            uni_year = form.save(commit=False)
+            uni_year.save()
+            return redirect('cv_home')
+    else:
+        form = EduForm()
+    return render(request, 'cv/edu_edit.html', {'form': form})
+
+
+def cv_edu_edit(request, pk):
+    uni_year = get_object_or_404(UniYear, pk=pk)
+    if request.method == "POST":
+        form = EduForm(request.POST, instance=uni_year)
+        if form.is_valid():
+            uni_year = form.save(commit=False)
+            uni_year.save()
+            return redirect('cv_home', pk=uni_year.pk)
+    else:
+        form = EduForm(instance=uni_year)
+    return render(request, 'cv/edu_edit.html', {'form': form})

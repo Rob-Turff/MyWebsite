@@ -32,3 +32,12 @@ class Project(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class UniYear(models.Model):
+    year = models.CharField(max_length=100)
+    grades = models.TextField()
+    overall_grade = models.TextField()
+
+    def __str__(self):
+        return self.year
