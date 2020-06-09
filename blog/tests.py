@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .models import UniYear
+from .models import UniYear, Skills
 
 
 class HomePageTest(TestCase):
@@ -84,23 +84,23 @@ class CvSkillsSectionTest(TestCase):
 
     def test_skills_page_returns_correct_html(self):
         response = self.client.get('/cv/skills/')
-        self.assertTemplateUsed(response, 'cv/skills.html')
+        self.assertTemplateUsed(response, 'cv/skills_edit.html')
 
     def test_skills_page_can_save_POST_request(self):
-        self.add_year_to_database(self.skills_col_1, self.skills_col_2)
-        self.check_year_saved_correctly(self.skills_col_1, self.skills_col_2)
+        self.add_skills_to_database(self.skills_col_1, self.skills_col_2)
+        self.check_skills_saved_correctly(self.skills_col_1, self.skills_col_2)
 
     def test_skills_page_can_edit_previous_entry(self):
         extra_text = ' yes'
-        self.add_year_to_database(self.skills_col_1, self.skills_col_2)
-        self.edit_year_in_database(self.skills_col_1 + extra_text, self.skills_col_2)
-        self.check_year_saved_correctly(self.skills_col_1 + extra_text, self.skills_col_2)
+        self.add_skills_to_database(self.skills_col_1, self.skills_col_2)
+        self.edit_skills_in_database(self.skills_col_1 + extra_text, self.skills_col_2)
+        self.check_skills_saved_correctly(self.skills_col_1 + extra_text, self.skills_col_2)
 
     def test_skills_num_database_entries_correct(self):
         extra_text = ' yes'
         self.assertEqual(Skills.objects.count(), 0)
-        self.add_year_to_database(self.skills_col_1, self.skills_col_2)
+        self.add_skills_to_database(self.skills_col_1, self.skills_col_2)
         self.assertEqual(Skills.objects.count(), 1)
-        self.edit_year_in_database(self.skills_col_1 + extra_text, self.skills_col_2)
+        self.edit_skills_in_database(self.skills_col_1 + extra_text, self.skills_col_2)
         self.assertEqual(Skills.objects.count(), 1)
 

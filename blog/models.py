@@ -41,3 +41,11 @@ class UniYear(models.Model):
 
     def __str__(self):
         return self.year
+
+
+class Skills(models.Model):
+    first_col = models.TextField()
+    second_col = models.TextField()
+
+    def __str__(self):
+        return 'Skills section'

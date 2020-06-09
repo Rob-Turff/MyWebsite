@@ -88,16 +88,15 @@ class AdminUserTests(StaticLiveServerTestCase):
         self.assertTrue(any('Additional Information' in h.text for h in headings))
         # Dave decides to add to the eduction section first
         self.browser.find_element_by_id('add-uni-year-button').click()
-        heading = self.browser.find_element_by_tag_name('h2')
-        self.assertIn('Uni Year', heading)
+        headings = self.browser.find_elements_by_tag_name('h2')
+        self.assertTrue(any('Uni Year' in h.text for h in headings))
         # Dave adds his first years grades to the page
         textInput = self.browser.find_element_by_id('id_year')
         text = 'First Year Results'
         textInput.send_keys(text)
         textInput = self.browser.find_element_by_id('id_grades')
-        break_line = '<br>'
         gradesText = 'Introduction to tea drinking: 999%'
-        textInput.send_keys(gradesText + break_line)
+        textInput.send_keys('<li>' + gradesText + '</li>')
         textInput = self.browser.find_element_by_id('id_overall_grade')
         overallGradesText = 'Overall Grade: 105% (Underflow Error Class)'
         textInput.send_keys(overallGradesText)
@@ -106,19 +105,21 @@ class AdminUserTests(StaticLiveServerTestCase):
         # Dave admires his handy work back on the main cv page
         pOnPage = self.browser.find_elements_by_tag_name('p')
         self.assertTrue(any(text in p.text for p in pOnPage))
-        self.assertTrue(any(gradesText in p.text for p in pOnPage))
         self.assertTrue(any(overallGradesText in p.text for p in pOnPage))
+        liOnPage = self.browser.find_elements_by_tag_name('li')
+        self.assertTrue(any(gradesText in li.text for li in liOnPage))
         # He realises he missed one of the grades and goes to add it
         self.browser.find_element_by_id('edit-uni-year-button-1').click()
         heading = self.browser.find_element_by_tag_name('h2')
-        self.assertIn('Uni Year', heading)
+        self.assertIn('Uni Year', heading.text)
         textInput = self.browser.find_element_by_id('id_grades')
         newGradesText = 'Tea making workshop: 42%'
-        textInput.send_keys(newGradesText + break_line)
+        textInput.send_keys('<li>' + newGradesText + '</li>')
         self.browser.find_element_by_class_name('save').click()
         time.sleep(0.25)
-        pOnPage = self.browser.find_elements_by_tag_name('p')
-        self.assertTrue(any((gradesText + '\n' + newGradesText) in p.text for p in pOnPage))
+        liOnPage = self.browser.find_elements_by_tag_name('li')
+        self.assertTrue(any(gradesText in li.text for li in liOnPage))
+        self.assertTrue(any(newGradesText in li.text for li in liOnPage))
 
     def test_can_view_and_edit_skills_section_of_cv(self):
         # Dave navigates to the cv page of the website
@@ -126,7 +127,7 @@ class AdminUserTests(StaticLiveServerTestCase):
         # Dave decides to add some of his many useful skills to the appropriate section on the website
         self.browser.find_element_by_id('edit-skills-button').click()
         heading = self.browser.find_element_by_tag_name('h2')
-        self.assertIn('Skills Section', heading)
+        self.assertIn('Skills Section', heading.text)
         # Dave adds some of his skills to both of the columns
         text_input = self.browser.find_element_by_id('id_first_col')
         first_col_text1 = '<li>Tea Making (Expert)</li>'

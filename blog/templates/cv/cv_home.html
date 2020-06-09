@@ -24,6 +24,19 @@
         </a>
     {% endif %}
     <h1>Tech Skills</h1>
+    {% if user.is_authenticated %}
+        <a class="admin-buttons" href="{% url 'skills_edit' %}">
+            <button type="button" id="edit-skills-button">Edit Skills</button>
+        </a>
+    {% endif %}
+    <div class="cv-skills">
+        <div class="col">
+            <ul>{{ skills.first_col|safe }}</ul>
+        </div>
+        <div class="col">
+            <ul>{{ skills.second_col|safe }}</ul>
+        </div>
+    </div>
     <h1>Work Experience</h1>
     <h1>Academic Projects</h1>
     <h1>Additional Information</h1>
