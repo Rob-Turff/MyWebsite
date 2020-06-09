@@ -1,0 +1,2 @@
+Add delete buttons to various sections
+Add tests for projects

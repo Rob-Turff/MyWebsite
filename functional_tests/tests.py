@@ -88,6 +88,8 @@ class AdminUserTests(StaticLiveServerTestCase):
         self.assertTrue(any('Additional Information' in h.text for h in headings))
         # Dave decides to add to the eduction section first
         self.browser.find_element_by_id('add-uni-year-button').click()
+        heading = self.browser.find_element_by_tag_name('h2')
+        self.assertIn('Uni Year', heading)
         # Dave adds his first years grades to the page
         textInput = self.browser.find_element_by_id('id_year')
         text = 'First Year Results'
@@ -108,6 +110,8 @@ class AdminUserTests(StaticLiveServerTestCase):
         self.assertTrue(any(overallGradesText in p.text for p in pOnPage))
         # He realises he missed one of the grades and goes to add it
         self.browser.find_element_by_id('edit-uni-year-button-1').click()
+        heading = self.browser.find_element_by_tag_name('h2')
+        self.assertIn('Uni Year', heading)
         textInput = self.browser.find_element_by_id('id_grades')
         newGradesText = 'Tea making workshop: 42%'
         textInput.send_keys(newGradesText + break_line)
@@ -121,6 +125,8 @@ class AdminUserTests(StaticLiveServerTestCase):
         self.browser.get(self.live_server_url + '/cv')
         # Dave decides to add some of his many useful skills to the appropriate section on the website
         self.browser.find_element_by_id('edit-skills-button').click()
+        heading = self.browser.find_element_by_tag_name('h2')
+        self.assertIn('Skills Section', heading)
         # Dave adds some of his skills to both of the columns
         text_input = self.browser.find_element_by_id('id_first_col')
         first_col_text1 = '<li>Tea Making (Expert)</li>'

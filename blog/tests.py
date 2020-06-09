@@ -8,7 +8,7 @@ class HomePageTest(TestCase):
         self.assertTemplateUsed(response, 'mainpage/home.html')
 
 
-class CvEduPageTest(TestCase):
+class CvEduSectionTest(TestCase):
     year = 'First Year'
     grades = 'Many good grades yes yes'
     overall_grade = 'Best grade yes yes'
@@ -54,10 +54,53 @@ class CvEduPageTest(TestCase):
         self.edit_year_in_database(self.year, self.grades + extra_text, self.overall_grade, 1)
         self.check_year_saved_correctly(self.year, self.grades + extra_text, self.overall_grade)
 
-    def test_num_database_entries_correct(self):
+    def test_edu_num_database_entries_correct(self):
         extra_text = ' yes'
         self.assertEqual(UniYear.objects.count(), 0)
         self.add_year_to_database(self.year, self.grades, self.overall_grade)
         self.assertEqual(UniYear.objects.count(), 1)
         self.edit_year_in_database(self.year, self.grades + extra_text, self.overall_grade, 1)
         self.assertEqual(UniYear.objects.count(), 1)
+
+class CvSkillsSectionTest(TestCase):
+    skills_col_1 = 'Many many skills to be had here'
+    skills_col_2 = 'Even more over this side'
+    def add_skills_to_database(self,  skills_col_1,  skills_col_2):
+        response = self.client.post('/cv/skills/',
+                                    data={'first_col': skills_col_1, 'second_col': skills_col_2})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['location'], '/cv')
+
+    def edit_skills_in_database(self,  skills_col_1,  skills_col_2):
+        response = self.client.post('/cv/skills/',
+                                    data={'first_col': skills_col_1, 'second_col': skills_col_2})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['location'], '/cv')
+
+    def check_skills_saved_correctly(self,  skills_col_1,  skills_col_2):
+        response = self.client.get('/cv').content.decode()
+        self.assertIn(skills_col_1, response)
+        self.assertIn(skills_col_2, response)
+
+    def test_skills_page_returns_correct_html(self):
+        response = self.client.get('/cv/skills/')
+        self.assertTemplateUsed(response, 'cv/skills.html')
+
+    def test_skills_page_can_save_POST_request(self):
+        self.add_year_to_database(self.skills_col_1, self.skills_col_2)
+        self.check_year_saved_correctly(self.skills_col_1, self.skills_col_2)
+
+    def test_skills_page_can_edit_previous_entry(self):
+        extra_text = ' yes'
+        self.add_year_to_database(self.skills_col_1, self.skills_col_2)
+        self.edit_year_in_database(self.skills_col_1 + extra_text, self.skills_col_2)
+        self.check_year_saved_correctly(self.skills_col_1 + extra_text, self.skills_col_2)
+
+    def test_skills_num_database_entries_correct(self):
+        extra_text = ' yes'
+        self.assertEqual(Skills.objects.count(), 0)
+        self.add_year_to_database(self.skills_col_1, self.skills_col_2)
+        self.assertEqual(Skills.objects.count(), 1)
+        self.edit_year_in_database(self.skills_col_1 + extra_text, self.skills_col_2)
+        self.assertEqual(Skills.objects.count(), 1)
+

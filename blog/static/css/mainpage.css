@@ -39,7 +39,7 @@ body {
     background-color: #121212;
 }
 
-h1, h2, h3, h4, p, a, i {
+h1, h2, h3, h4, p, a, i, ul, li {
     font-family: 'Merriweather', serif;
     color: white;
 }
