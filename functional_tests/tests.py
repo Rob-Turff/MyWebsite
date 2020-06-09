@@ -72,7 +72,7 @@ class AdminUserTests(StaticLiveServerTestCase):
         pTextOnPage = self.browser.find_elements_by_tag_name('p')
         self.assertTrue(any(text in t.text for t in pTextOnPage))
 
-    def test_can_navigate_to_cv_page_and_edit_it(self):
+    def test_can_navigate_to_cv_page_and_edit_education_section(self):
         # Dave navigates to the home page of the website
         self.browser.get(self.live_server_url)
         # During one of Daves many tea induced fever dreams he has learned some new skills he wishes to add to his cv
@@ -116,5 +116,11 @@ class AdminUserTests(StaticLiveServerTestCase):
         pOnPage = self.browser.find_elements_by_tag_name('p')
         self.assertTrue(any((gradesText + '\n' + newGradesText) in p.text for p in pOnPage))
 
-    def test_can_view_and_edit_skills_section(self):
-        self.assertTrue(True)
+    def test_can_view_and_edit_skills_section_of_cv(self):
+        # Dave navigates to the cv page of the website
+        self.browser.get(self.live_server_url + '/cv')
+        # Dave decides to add some of his many useful skills to the appropriate section on the website
+        self.browser.find_element_by_id('edit-skills-button').click()
+        # Dave adds some of his skills to both of the columns
+        text_input = self.browser.find_element_by_id('id_first_col')
+        text_input.send_keys()
