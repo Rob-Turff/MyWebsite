@@ -9,7 +9,7 @@
     {% for year in years %}
         <div class="cv-uni-year">
             <p><b>{{ year.year }}</b></p>
-            <p>{{ year.grades|safe }}</p>
+            <ul>{{ year.grades|safe }}</ul>
             <p><b>{{ year.overall_grade|safe }}</b></p>
         </div>
         {% if user.is_authenticated %}
