@@ -62,7 +62,8 @@ def project_list(request):
 
 
 def cv_home(request):
-    return render(request, 'cv/cv_home.html', {})
+    years = UniYear.objects.all()
+    return render(request, 'cv/cv_home.html', {'years' : years})
 
 
 def cv_edu_new(request):
@@ -84,7 +85,7 @@ def cv_edu_edit(request, pk):
         if form.is_valid():
             uni_year = form.save(commit=False)
             uni_year.save()
-            return redirect('cv_home', pk=uni_year.pk)
+            return redirect('cv_home')
     else:
         form = EduForm(instance=uni_year)
     return render(request, 'cv/edu_edit.html', {'form': form})

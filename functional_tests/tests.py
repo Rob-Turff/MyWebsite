@@ -12,13 +12,13 @@ class AdminUserTests(StaticLiveServerTestCase):
     def setUp(self):
         self.adminAccount = User.objects.create_superuser('testuser', 'testuser@test.com', 'password')
         self.browser = webdriver.Firefox()
+        self.login_to_admin_page()
 
     def tearDown(self):
         self.browser.quit()
 
     def login_to_admin_page(self):
         self.browser.get(self.live_server_url + '/admin/login/?next=/admin/')
-        # Dave types in the admin credentials
         usernameField = self.browser.find_element_by_id('id_username')
         usernameField.send_keys(self.adminAccount.username)
         passwordField = self.browser.find_element_by_id('id_password')
@@ -27,12 +27,7 @@ class AdminUserTests(StaticLiveServerTestCase):
         time.sleep(0.25)
 
     def test_can_add_edit_and_view_blog_posts(self):
-        # Dave decides he wants to be the most powerful being in the universe
-        # and so opens and logs into the admin login page
-        self.login_to_admin_page()
-        # Dave checks that he is now all powerful
-        self.assertIn('Site administration | Django site admin', self.browser.title)
-        # Dave navigates back to the home page of the website
+        # Dave navigates to the home page of the website
         self.browser.get(self.live_server_url)
         # Dave, being an absolutely spiffing individual decides that he wants to make a post about yorkshire tea gold
         # and so presses the blog button in the top navigation bar
@@ -78,10 +73,7 @@ class AdminUserTests(StaticLiveServerTestCase):
         self.assertTrue(any(text in t.text for t in pTextOnPage))
 
     def test_can_navigate_to_cv_page_and_edit_it(self):
-        # Dave decides he wants to be the most powerful being in the universe
-        # and so opens and logs into the admin login page
-        self.login_to_admin_page()
-        # Dave navigates back to the home page of the website
+        # Dave navigates to the home page of the website
         self.browser.get(self.live_server_url)
         # During one of Daves many tea induced fever dreams he has learned some new skills he wishes to add to his cv
         # thus he clicks on the cv button in the navigation bar
@@ -101,8 +93,9 @@ class AdminUserTests(StaticLiveServerTestCase):
         text = 'First Year Results'
         textInput.send_keys(text)
         textInput = self.browser.find_element_by_id('id_grades')
+        break_line = '<br>'
         gradesText = 'Introduction to tea drinking: 999%'
-        textInput.send_keys(gradesText)
+        textInput.send_keys(gradesText + break_line)
         textInput = self.browser.find_element_by_id('id_overall_grade')
         overallGradesText = 'Overall Grade: 105% (Underflow Error Class)'
         textInput.send_keys(overallGradesText)
@@ -114,10 +107,14 @@ class AdminUserTests(StaticLiveServerTestCase):
         self.assertTrue(any(gradesText in p.text for p in pOnPage))
         self.assertTrue(any(overallGradesText in p.text for p in pOnPage))
         # He realises he missed one of the grades and goes to add it
-        self.browser.find_element_by_id('edit-uni-year-button-1')
+        self.browser.find_element_by_id('edit-uni-year-button-1').click()
         textInput = self.browser.find_element_by_id('id_grades')
-        newGradesText = '\nTea making workshop: 42%'
-        textInput.send_keys(newGradesText)
+        newGradesText = 'Tea making workshop: 42%'
+        textInput.send_keys(newGradesText + break_line)
         self.browser.find_element_by_class_name('save').click()
         time.sleep(0.25)
-        self.assertTrue(any(gradesText + newGradesText in p.text for p in pOnPage))
+        pOnPage = self.browser.find_elements_by_tag_name('p')
+        self.assertTrue(any((gradesText + '\n' + newGradesText) in p.text for p in pOnPage))
+
+    def test_can_view_and_edit_skills_section(self):
+        self.assertTrue(True)
