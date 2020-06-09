@@ -123,4 +123,17 @@ class AdminUserTests(StaticLiveServerTestCase):
         self.browser.find_element_by_id('edit-skills-button').click()
         # Dave adds some of his skills to both of the columns
         text_input = self.browser.find_element_by_id('id_first_col')
-        text_input.send_keys()
+        first_col_text1 = '<li>Tea Making (Expert)</li>'
+        first_col_text2 = '<li>Tea Consumption (Beyond Expert)</li>'
+        text_input.send_keys(first_col_text1 + first_col_text2)
+        text_input = self.browser.find_element_by_id('id_second_col')
+        second_col_text1 = '<li>Gaming (Basically Shroud)</li>'
+        second_col_text2 = '<li>Anything else (Beyond Terrible)</li>'
+        text_input.send_keys(second_col_text1 + second_col_text2)
+        # Dave clicks save button
+        self.browser.find_element_by_class_name('save').click()
+        time.sleep(0.25)
+        # Dave reviews the added skills back on the main cv page
+        liOnPage = self.browser.find_elements_by_tag_name('li')
+        # TODO MIGHT NOT WORK
+        self.assertTrue(all(first_col_text1 or first_col_text2 or second_col_text1 or second_col_text1 in li.text for li in liOnPage))
