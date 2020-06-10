@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Post, UniYear, Skills
+from .models import Post, UniYear, Skills, Job
 
 
 class PostForm(forms.ModelForm):
@@ -17,4 +17,9 @@ class EduForm(forms.ModelForm):
 class SkillsForm(forms.ModelForm):
     class Meta:
         model = Skills
-        fields = ('first_col', 'second_col')
+        fields = ('first_col', 'second_col',)
+
+class JobForm(forms.ModelForm):
+    class Meta:
+        model = Job
+        fields = ('title', 'location', 'date', 'description',)

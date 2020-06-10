@@ -130,31 +130,31 @@ class AdminUserTests(StaticLiveServerTestCase):
         self.assertIn('Skills Section', heading.text)
         # Dave adds some of his skills to both of the columns
         text_input = self.browser.find_element_by_id('id_first_col')
-        first_col_text1 = '<li>Tea Making (Expert)</li>'
-        first_col_text2 = '<li>Tea Consumption (Beyond Expert)</li>'
-        text_input.send_keys(first_col_text1 + first_col_text2)
+        first_col_text1 = 'Tea Making (Expert)'
+        first_col_text2 = 'Tea Consumption (Beyond Expert)'
+        text_input.send_keys('<li>' + first_col_text1 + '</li>' + '<li>' + first_col_text2 + '</li>')
         text_input = self.browser.find_element_by_id('id_second_col')
-        second_col_text1 = '<li>Gaming (Basically Shroud)</li>'
-        second_col_text2 = '<li>Anything else (Beyond Terrible)</li>'
-        text_input.send_keys(second_col_text1 + second_col_text2)
+        second_col_text1 = 'Gaming (Basically Shroud)'
+        second_col_text2 = 'Anything else (Beyond Terrible)'
+        text_input.send_keys('<li>' + second_col_text1 + '</li>' + '<li>' + second_col_text2 + '</li>')
         # Dave clicks save button
         self.browser.find_element_by_class_name('save').click()
         time.sleep(0.25)
         # Dave reviews the added skills back on the main cv page
         liOnPage = self.browser.find_elements_by_tag_name('li')
-        self.assertIn(first_col_text1, liOnPage)
-        self.assertIn(first_col_text2, liOnPage)
-        self.assertIn(second_col_text1, liOnPage)
-        self.assertIn(second_col_text1, liOnPage)
+        self.assertTrue(any(first_col_text1 in li.text for li in liOnPage))
+        self.assertTrue(any(first_col_text2 in li.text for li in liOnPage))
+        self.assertTrue(any(second_col_text1 in li.text for li in liOnPage))
+        self.assertTrue(any(second_col_text1 in li.text for li in liOnPage))
         # Dave edits one of the columns
         self.browser.find_element_by_id('edit-skills-button').click()
         text_input = self.browser.find_element_by_id('id_first_col')
-        first_col_text1_extra = '<li>GOD OF THE TEA!</li>'
-        text_input.send_keys(first_col_text1_extra)
+        first_col_text1_extra = 'GOD OF THE TEA!'
+        text_input.send_keys('<li>' + first_col_text1_extra + '</li>')
         self.browser.find_element_by_class_name('save').click()
         time.sleep(0.25)
         liOnPage = self.browser.find_elements_by_tag_name('li')
-        self.assertIn(first_col_text1_extra, liOnPage)
+        self.assertTrue(any(first_col_text1_extra in li.text for li in liOnPage))
 
     def test_can_view_and_edit_jobs_section(self):
         # Dave navigates to the cv page of the website
@@ -165,9 +165,9 @@ class AdminUserTests(StaticLiveServerTestCase):
         self.assertIn('Jobs Section', heading.text)
         # Dave enters the details of his most recent job
         title_input = self.browser.find_element_by_id('id_title')
-        location_input = self.browser.find_element_by_id('id_title')
-        date_input = self.browser.find_element_by_id('id_title')
-        description_input = self.browser.find_element_by_id('id_title')
+        location_input = self.browser.find_element_by_id('id_location')
+        date_input = self.browser.find_element_by_id('id_date')
+        description_input = self.browser.find_element_by_id('id_description')
         job_title = 'Tea taster'
         job_location = 'Trusty Teapot, Teatown'
         job_date = 'August 2019 - Now'
@@ -188,7 +188,7 @@ class AdminUserTests(StaticLiveServerTestCase):
         self.browser.find_element_by_id('edit-job-button-1').click()
         heading = self.browser.find_element_by_tag_name('h2')
         self.assertIn('Jobs Section', heading.text)
-        description_input = self.browser.find_element_by_id('id_title')
+        description_input = self.browser.find_element_by_id('id_description')
         job_description_extra = ' Yorkshire tea is still the best though!'
         description_input.send_keys(job_description_extra)
         self.browser.find_element_by_class_name('save').click()

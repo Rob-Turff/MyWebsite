@@ -107,7 +107,7 @@ class CvSkillsSectionTest(TestCase):
         self.assertEqual(Skills.objects.count(), 1)
 
 
-class CvJobSectionTest():
+class CvJobSectionTest(TestCase):
     job_title = 'Tea taster'
     job_location = 'Trusty Teapot, Teatown'
     job_date = 'August 2019 - Now'
@@ -150,7 +150,7 @@ class CvJobSectionTest():
     def test_job_page_can_edit_previous_entry(self):
         extra_text = ' best job yes yes'
         self.add_job_to_database(self.job_title, self.job_location, self.job_date, self.job_description)
-        self.edit_job_in_database(self.job_title, self.job_location, self.job_date, self.job_description + extra_text)
+        self.edit_job_in_database(self.job_title, self.job_location, self.job_date, self.job_description + extra_text, 1)
         self.check_job_saved_correctly(self.job_title, self.job_location, self.job_date, self.job_description + extra_text)
 
     def test_skills_num_database_entries_correct(self):
@@ -158,5 +158,5 @@ class CvJobSectionTest():
         self.assertEqual(Job.objects.count(), 0)
         self.add_job_to_database(self.job_title, self.job_location, self.job_date, self.job_description + extra_text)
         self.assertEqual(Job.objects.count(), 1)
-        self.edit_job_in_database(self.job_title, self.job_location, self.job_date, self.job_description + extra_text)
+        self.edit_job_in_database(self.job_title, self.job_location, self.job_date, self.job_description + extra_text, 1)
         self.assertEqual(Job.objects.count(), 1)

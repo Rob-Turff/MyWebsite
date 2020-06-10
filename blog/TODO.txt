@@ -1,2 +1,3 @@
-Add delete buttons to various sections
-Add tests for projects
+Add delete buttons to various models
+Add tests for project model
+Make one base form template?

@@ -38,6 +38,22 @@
         </div>
     </div>
     <h1>Work Experience</h1>
+    {% for job in jobs %}
+        <div class="cv-job">
+            <p><b>{{ job.location }} - {{ job.title }}({{ job.date }})</b></p>
+            <p>{{ job.description }}</p>
+        </div>
+        {% if user.is_authenticated %}
+            <a class="admin-buttons" href="{% url 'job_edit' pk=job.pk %}">
+                <button type="button" id="edit-job-button-{{ job.pk }}">Edit Job</button>
+            </a>
+        {% endif %}
+    {% endfor %}
+    {% if user.is_authenticated %}
+        <a class="admin-buttons" href="{% url 'job_new' %}" id="add-job-button">
+            <button type="button">Add Job</button>
+        </a>
+    {% endif %}
     <h1>Academic Projects</h1>
     <h1>Additional Information</h1>
 {% endblock %}

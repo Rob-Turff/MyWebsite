@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
-from .forms import PostForm, EduForm, SkillsForm
-from .models import Post, Project, UniYear, Skills
+from .forms import PostForm, EduForm, SkillsForm, JobForm
+from .models import Post, Project, UniYear, Skills, Job
 
 
 def home(request):
@@ -64,7 +64,8 @@ def project_list(request):
 def cv_home(request):
     years = UniYear.objects.all()
     skills = Skills.objects.first()
-    return render(request, 'cv/cv_home.html', {'years': years, 'skills': skills})
+    jobs = Job.objects.all()
+    return render(request, 'cv/cv_home.html', {'years': years, 'skills': skills, 'jobs': jobs})
 
 
 def cv_edu_new(request):
@@ -106,7 +107,32 @@ def cv_skills_edit(request):
     else:
         if Skills.objects.count() == 1:
             skill_obj = Skills.objects.first()
-            form = SkillsForm(request, instance=skill_obj)
+            form = SkillsForm(instance=skill_obj)
         else:
             form = SkillsForm()
     return render(request, 'cv/skills_edit.html', {'form': form})
+
+
+def cv_job_new(request):
+    if request.method == "POST":
+        form = JobForm(request.POST)
+        if form.is_valid():
+            job = form.save(commit=False)
+            job.save()
+            return redirect('cv_home')
+    else:
+        form = JobForm()
+    return render(request, 'cv/job_edit.html', {'form': form})
+
+
+def cv_job_edit(request, pk):
+    job = get_object_or_404(Job, pk=pk)
+    if request.method == "POST":
+        form = JobForm(request.POST, instance=job)
+        if form.is_valid():
+            job = form.save(commit=False)
+            job.save()
+            return redirect('cv_home')
+    else:
+        form = JobForm(instance=job)
+    return render(request, 'cv/job_edit.html', {'form': form})

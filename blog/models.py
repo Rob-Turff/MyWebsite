@@ -49,3 +49,13 @@ class Skills(models.Model):
 
     def __str__(self):
         return 'Skills section'
+
+
+class Job(models.Model):
+    title = models.CharField(max_length=50)
+    location = models.CharField(max_length=100)
+    date = models.CharField(max_length=50)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.title
