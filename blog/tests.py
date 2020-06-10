@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .models import UniYear, Skills
+from .models import UniYear, Skills, Job
 
 
 class HomePageTest(TestCase):
@@ -62,22 +62,24 @@ class CvEduSectionTest(TestCase):
         self.edit_year_in_database(self.year, self.grades + extra_text, self.overall_grade, 1)
         self.assertEqual(UniYear.objects.count(), 1)
 
+
 class CvSkillsSectionTest(TestCase):
     skills_col_1 = 'Many many skills to be had here'
     skills_col_2 = 'Even more over this side'
-    def add_skills_to_database(self,  skills_col_1,  skills_col_2):
+
+    def add_skills_to_database(self, skills_col_1, skills_col_2):
         response = self.client.post('/cv/skills/',
                                     data={'first_col': skills_col_1, 'second_col': skills_col_2})
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response['location'], '/cv')
 
-    def edit_skills_in_database(self,  skills_col_1,  skills_col_2):
+    def edit_skills_in_database(self, skills_col_1, skills_col_2):
         response = self.client.post('/cv/skills/',
                                     data={'first_col': skills_col_1, 'second_col': skills_col_2})
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response['location'], '/cv')
 
-    def check_skills_saved_correctly(self,  skills_col_1,  skills_col_2):
+    def check_skills_saved_correctly(self, skills_col_1, skills_col_2):
         response = self.client.get('/cv').content.decode()
         self.assertIn(skills_col_1, response)
         self.assertIn(skills_col_2, response)
@@ -104,3 +106,57 @@ class CvSkillsSectionTest(TestCase):
         self.edit_skills_in_database(self.skills_col_1 + extra_text, self.skills_col_2)
         self.assertEqual(Skills.objects.count(), 1)
 
+
+class CvJobSectionTest():
+    job_title = 'Tea taster'
+    job_location = 'Trusty Teapot, Teatown'
+    job_date = 'August 2019 - Now'
+    job_description = 'Tasted lots of tea, gained a new appreciation for teas other than yorkshire tea gold!'
+
+    def add_job_to_database(self, title, location, date, description):
+        response = self.client.post('/cv/job/new/',
+                                    data={'title': title, 'location': location, 'date': date,
+                                          'description': description})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['location'], '/cv')
+
+    def edit_job_in_database(self, title, location, date, description, pk):
+        response = self.client.post('/cv/job/' + str(pk) + '/',
+                                    data={'title': title, 'location': location, 'date': date,
+                                          'description': description})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['location'], '/cv')
+
+    def check_job_saved_correctly(self, title, location, date, description):
+        response = self.client.get('/cv').content.decode()
+        self.assertIn(title, response)
+        self.assertIn(location, response)
+        self.assertIn(date, response)
+        self.assertIn(description, response)
+
+    def test_job_page_returns_correct_html(self):
+        response = self.client.get('/cv/job/new/')
+        self.assertTemplateUsed(response, 'cv/job_edit.html')
+
+    def test_edit_job_page_returns_correct_html(self):
+        self.add_job_to_database(self.job_title, self.job_location, self.job_date, self.job_description)
+        response = self.client.get('/cv/job/1/')
+        self.assertTemplateUsed(response, 'cv/job_edit.html')
+
+    def test_job_page_can_save_POST_request(self):
+        self.add_job_to_database(self.job_title, self.job_location, self.job_date, self.job_description)
+        self.check_job_saved_correctly(self.job_title, self.job_location, self.job_date, self.job_description)
+
+    def test_job_page_can_edit_previous_entry(self):
+        extra_text = ' best job yes yes'
+        self.add_job_to_database(self.job_title, self.job_location, self.job_date, self.job_description)
+        self.edit_job_in_database(self.job_title, self.job_location, self.job_date, self.job_description + extra_text)
+        self.check_job_saved_correctly(self.job_title, self.job_location, self.job_date, self.job_description + extra_text)
+
+    def test_skills_num_database_entries_correct(self):
+        extra_text = ' best job yes yes'
+        self.assertEqual(Job.objects.count(), 0)
+        self.add_job_to_database(self.job_title, self.job_location, self.job_date, self.job_description + extra_text)
+        self.assertEqual(Job.objects.count(), 1)
+        self.edit_job_in_database(self.job_title, self.job_location, self.job_date, self.job_description + extra_text)
+        self.assertEqual(Job.objects.count(), 1)

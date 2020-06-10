@@ -142,5 +142,56 @@ class AdminUserTests(StaticLiveServerTestCase):
         time.sleep(0.25)
         # Dave reviews the added skills back on the main cv page
         liOnPage = self.browser.find_elements_by_tag_name('li')
-        # TODO MIGHT NOT WORK
-        self.assertTrue(all(first_col_text1 or first_col_text2 or second_col_text1 or second_col_text1 in li.text for li in liOnPage))
+        self.assertIn(first_col_text1, liOnPage)
+        self.assertIn(first_col_text2, liOnPage)
+        self.assertIn(second_col_text1, liOnPage)
+        self.assertIn(second_col_text1, liOnPage)
+        # Dave edits one of the columns
+        self.browser.find_element_by_id('edit-skills-button').click()
+        text_input = self.browser.find_element_by_id('id_first_col')
+        first_col_text1_extra = '<li>GOD OF THE TEA!</li>'
+        text_input.send_keys(first_col_text1_extra)
+        self.browser.find_element_by_class_name('save').click()
+        time.sleep(0.25)
+        liOnPage = self.browser.find_elements_by_tag_name('li')
+        self.assertIn(first_col_text1_extra, liOnPage)
+
+    def test_can_view_and_edit_jobs_section(self):
+        # Dave navigates to the cv page of the website
+        self.browser.get(self.live_server_url + '/cv')
+        # Dave decides to add some of the many jobs he has done
+        self.browser.find_element_by_id('add-job-button').click()
+        heading = self.browser.find_element_by_tag_name('h2')
+        self.assertIn('Jobs Section', heading.text)
+        # Dave enters the details of his most recent job
+        title_input = self.browser.find_element_by_id('id_title')
+        location_input = self.browser.find_element_by_id('id_title')
+        date_input = self.browser.find_element_by_id('id_title')
+        description_input = self.browser.find_element_by_id('id_title')
+        job_title = 'Tea taster'
+        job_location = 'Trusty Teapot, Teatown'
+        job_date = 'August 2019 - Now'
+        job_description = 'Tasted lots of tea, gained a new appreciation for teas other than yorkshire tea gold!'
+        title_input.send_keys(job_title)
+        location_input.send_keys(job_location)
+        date_input.send_keys(job_date)
+        description_input.send_keys(job_description)
+        self.browser.find_element_by_class_name('save').click()
+        time.sleep(0.25)
+        # Dave reviews the job he entered on the CV main page
+        pOnPage = self.browser.find_elements_by_tag_name('p')
+        self.assertTrue(any(job_title in p.text for p in pOnPage))
+        self.assertTrue(any(job_location in p.text for p in pOnPage))
+        self.assertTrue(any(job_date in p.text for p in pOnPage))
+        self.assertTrue(any(job_description in p.text for p in pOnPage))
+        # Dave decides to add something to the description field
+        self.browser.find_element_by_id('edit-job-button-1').click()
+        heading = self.browser.find_element_by_tag_name('h2')
+        self.assertIn('Jobs Section', heading.text)
+        description_input = self.browser.find_element_by_id('id_title')
+        job_description_extra = ' Yorkshire tea is still the best though!'
+        description_input.send_keys(job_description_extra)
+        self.browser.find_element_by_class_name('save').click()
+        time.sleep(0.25)
+        pOnPage = self.browser.find_elements_by_tag_name('p')
+        self.assertTrue(any((job_description + job_description_extra) in p.text for p in pOnPage))
