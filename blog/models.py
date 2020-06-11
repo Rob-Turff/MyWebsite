@@ -21,14 +21,11 @@ class Post(models.Model):
 class Project(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
+    cv_description = models.TextField()
     link = models.TextField()
     image = models.ImageField(upload_to='images/projects/')
-    created_date = models.DateTimeField(default=timezone.now)
-    published_date = models.DateTimeField(blank=True, null=True)
-
-    def publish(self):
-        self.published_date = timezone.now()
-        self.save()
+    display_on_cv = models.BooleanField(default=False)
+    display_on_portfolio = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title

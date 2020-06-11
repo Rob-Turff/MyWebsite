@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .models import UniYear, Skills, Job
+from .models import UniYear, Skills, Job, Project
 
 
 class HomePageTest(TestCase):
@@ -150,13 +150,70 @@ class CvJobSectionTest(TestCase):
     def test_job_page_can_edit_previous_entry(self):
         extra_text = ' best job yes yes'
         self.add_job_to_database(self.job_title, self.job_location, self.job_date, self.job_description)
-        self.edit_job_in_database(self.job_title, self.job_location, self.job_date, self.job_description + extra_text, 1)
-        self.check_job_saved_correctly(self.job_title, self.job_location, self.job_date, self.job_description + extra_text)
+        self.edit_job_in_database(self.job_title, self.job_location, self.job_date, self.job_description + extra_text,
+                                  1)
+        self.check_job_saved_correctly(self.job_title, self.job_location, self.job_date,
+                                       self.job_description + extra_text)
 
-    def test_skills_num_database_entries_correct(self):
+    def test_job_num_database_entries_correct(self):
         extra_text = ' best job yes yes'
         self.assertEqual(Job.objects.count(), 0)
         self.add_job_to_database(self.job_title, self.job_location, self.job_date, self.job_description + extra_text)
         self.assertEqual(Job.objects.count(), 1)
-        self.edit_job_in_database(self.job_title, self.job_location, self.job_date, self.job_description + extra_text, 1)
+        self.edit_job_in_database(self.job_title, self.job_location, self.job_date, self.job_description + extra_text,
+                                  1)
         self.assertEqual(Job.objects.count(), 1)
+
+
+class CvProjectSectionTest(TestCase):
+    project_title = 'This Website'
+    project_date = 'May 2020 - Present'
+    project_description = 'Built the website using the Django framework for coursework set by uni'
+
+    def add_project_to_database(self, title, date, description):
+        response = self.client.post('/cv/project/new/',
+                                    data={'title': title, 'date': date,
+                                          'description': description})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['location'], '/cv')
+
+    def edit_project_in_database(self, title, date, description, pk):
+        response = self.client.post('/cv/project/' + str(pk) + '/',
+                                    data={'title': title, 'date': date,
+                                          'description': description})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['location'], '/cv')
+
+    def check_project_saved_correctly(self, title, date, description):
+        response = self.client.get('/cv').content.decode()
+        self.assertIn(title, response)
+        self.assertIn(date, response)
+        self.assertIn(description, response)
+
+    def test_project_page_returns_correct_html(self):
+        response = self.client.get('/cv/project/new/')
+        self.assertTemplateUsed(response, 'cv/project_edit.html')
+
+    def test_edit_project_page_returns_correct_html(self):
+        self.add_project_to_database(self.project_title, self.project_date, self.project_description)
+        response = self.client.get('/cv/project/1/')
+        self.assertTemplateUsed(response, 'cv/project_edit.html')
+
+    def test_project_page_can_save_POST_request(self):
+        self.add_project_to_database(self.project_title, self.project_date, self.project_description)
+        self.check_project_saved_correctly(self.project_title, self.project_date, self.project_description)
+
+    def test_project_page_can_edit_previous_entry(self):
+        extra_text = ' best project yes yes'
+        self.add_project_to_database(self.project_title, self.project_date, self.project_description)
+        self.edit_project_in_database(self.project_title, self.project_date,
+                                      self.project_description + extra_text, 1)
+        self.check_project_saved_correctly(self.project_title, self.project_date, self.project_description + extra_text)
+
+    def test_project_num_database_entries_correct(self):
+        extra_text = ' best project yes yes'
+        self.assertEqual(Project.objects.count(), 0)
+        self.add_project_to_database(self.project_title, self.project_date, self.project_description + extra_text)
+        self.assertEqual(Project.objects.count(), 1)
+        self.edit_project_in_database(self.project_title, self.project_date, self.project_description + extra_text, 1)
+        self.assertEqual(Project.objects.count(), 1)

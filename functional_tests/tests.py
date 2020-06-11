@@ -162,7 +162,7 @@ class AdminUserTests(StaticLiveServerTestCase):
         # Dave decides to add some of the many jobs he has done
         self.browser.find_element_by_id('add-job-button').click()
         heading = self.browser.find_element_by_tag_name('h2')
-        self.assertIn('Jobs Section', heading.text)
+        self.assertIn('New Job', heading.text)
         # Dave enters the details of his most recent job
         title_input = self.browser.find_element_by_id('id_title')
         location_input = self.browser.find_element_by_id('id_location')
@@ -187,7 +187,7 @@ class AdminUserTests(StaticLiveServerTestCase):
         # Dave decides to add something to the description field
         self.browser.find_element_by_id('edit-job-button-1').click()
         heading = self.browser.find_element_by_tag_name('h2')
-        self.assertIn('Jobs Section', heading.text)
+        self.assertIn('New Job', heading.text)
         description_input = self.browser.find_element_by_id('id_description')
         job_description_extra = ' Yorkshire tea is still the best though!'
         description_input.send_keys(job_description_extra)
@@ -195,3 +195,39 @@ class AdminUserTests(StaticLiveServerTestCase):
         time.sleep(0.25)
         pOnPage = self.browser.find_elements_by_tag_name('p')
         self.assertTrue(any((job_description + job_description_extra) in p.text for p in pOnPage))
+
+    def test_can_view_and_edit_project_section(self):
+        # Dave navigates to the cv page of the website
+        self.browser.get(self.live_server_url + '/cv')
+        # Dave decides to add some of the many projects he has done
+        self.browser.find_element_by_id('add-project-button').click()
+        heading = self.browser.find_element_by_tag_name('h2')
+        self.assertIn('New Project', heading.text)
+        # Dave enters the details of his most recent project
+        title_input = self.browser.find_element_by_id('id_title')
+        date_input = self.browser.find_element_by_id('id_date')
+        description_input = self.browser.find_element_by_id('id_description')
+        project_title = 'This website'
+        project_date = 'May 2020 - Present'
+        project_description = 'Set a coursework to teach us basic web development and test driven development.'
+        title_input.send_keys(project_title)
+        date_input.send_keys(project_date)
+        description_input.send_keys(project_description)
+        self.browser.find_element_by_class_name('save').click()
+        time.sleep(0.25)
+        # Dave reviews the project he entered on the CV main page
+        pOnPage = self.browser.find_elements_by_tag_name('p')
+        self.assertTrue(any(project_title in p.text for p in pOnPage))
+        self.assertTrue(any(project_date in p.text for p in pOnPage))
+        self.assertTrue(any(project_description in p.text for p in pOnPage))
+        # Dave decides to add something to the description field
+        self.browser.find_element_by_id('edit-project-button-1').click()
+        heading = self.browser.find_element_by_tag_name('h2')
+        self.assertIn('New Project', heading.text)
+        description_input = self.browser.find_element_by_id('id_description')
+        job_description_extra = ' Built using the Django framework.'
+        description_input.send_keys(job_description_extra)
+        self.browser.find_element_by_class_name('save').click()
+        time.sleep(0.25)
+        pOnPage = self.browser.find_elements_by_tag_name('p')
+        self.assertTrue(any((project_description + job_description_extra) in p.text for p in pOnPage))

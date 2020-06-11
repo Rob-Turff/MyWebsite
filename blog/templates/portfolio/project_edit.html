@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    CV
+    Projects
 {% endblock %}
 
 {% block content %}
-    <h2>New Job</h2>
+    <h2>New Project</h2>
     <form method="POST" class="post-form">{% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="save">Save</button>
+        <button type="submit" class="save">Post</button>
     </form>
 {% endblock %}
