@@ -55,5 +55,21 @@
         </a>
     {% endif %}
     <h1>Academic Projects</h1>
+    {% for project in projects %}
+        <div class="cv-project">
+            <p><b>{{ project.title }}({{ project.date }})</b></p>
+            <p>{{ project.description }}</p>
+        </div>
+        {% if user.is_authenticated %}
+            <a class="admin-buttons" href="{% url 'project_edit' pk=project.pk %}">
+                <button type="button" id="edit-project-button-{{ project.pk }}">Edit Project</button>
+            </a>
+        {% endif %}
+    {% endfor %}
+    {% if user.is_authenticated %}
+        <a class="admin-buttons" href="{% url 'project_new' %}" id="add-project-button">
+            <button type="button">Add Project</button>
+        </a>
+    {% endif %}
     <h1>Additional Information</h1>
 {% endblock %}

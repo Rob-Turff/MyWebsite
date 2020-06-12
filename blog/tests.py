@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .models import UniYear, Skills, Job, Project
+from .models import UniYear, Skills, Job, CvProject
 
 
 class HomePageTest(TestCase):
@@ -212,8 +212,51 @@ class CvProjectSectionTest(TestCase):
 
     def test_project_num_database_entries_correct(self):
         extra_text = ' best project yes yes'
-        self.assertEqual(Project.objects.count(), 0)
+        self.assertEqual(CvProject.objects.count(), 0)
         self.add_project_to_database(self.project_title, self.project_date, self.project_description + extra_text)
-        self.assertEqual(Project.objects.count(), 1)
+        self.assertEqual(CvProject.objects.count(), 1)
         self.edit_project_in_database(self.project_title, self.project_date, self.project_description + extra_text, 1)
-        self.assertEqual(Project.objects.count(), 1)
+        self.assertEqual(CvProject.objects.count(), 1)
+
+
+class CvAdditionalInfoSectionTest(TestCase):
+    text = 'Lots of additional information here'
+
+    def add_additional_info_to_database(self, text):
+        response = self.client.post('/cv/additional_info/',
+                                    data={'text': text})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['location'], '/cv')
+
+    def edit_additional_info_in_database(self, text):
+        response = self.client.post('/cv/additional_info/',
+                                    data={'text': text})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['location'], '/cv')
+
+    def check_additional_info_saved_correctly(self, text):
+        response = self.client.get('/cv').content.decode()
+        self.assertIn(text, response)
+        self.assertIn(text, response)
+
+    def test_additional_info_page_returns_correct_html(self):
+        response = self.client.get('/cv/additional_info/')
+        self.assertTemplateUsed(response, 'cv/additional_info_edit.html')
+
+    def test_additional_info_page_can_save_POST_request(self):
+        self.add_additional_info_to_database(self.text)
+        self.check_additional_info_saved_correctly(self.text)
+
+    def test_additional_info_page_can_edit_previous_entry(self):
+        extra_text = ' yes'
+        self.add_additional_info_to_database(self.text)
+        self.edit_additional_info_in_database(self.text + extra_text)
+        self.check_additional_info_saved_correctly(self.text + extra_text)
+
+    def test_additional_info_num_database_entries_correct(self):
+        extra_text = ' yes'
+        self.assertEqual(AdditionalInfo.objects.count(), 0)
+        self.add_additional_info_to_database(self.text)
+        self.assertEqual(AdditionalInfo.objects.count(), 1)
+        self.edit_additional_info_in_database(self.text + extra_text)
+        self.assertEqual(AdditionalInfo.objects.count(), 1)

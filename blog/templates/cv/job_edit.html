@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-    <h2>New Job</h2>
+    <h2>Jobs Section</h2>
     <form method="POST" class="post-form">{% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="save">Save</button>

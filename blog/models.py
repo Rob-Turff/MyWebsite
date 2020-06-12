@@ -21,11 +21,14 @@ class Post(models.Model):
 class Project(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
-    cv_description = models.TextField()
     link = models.TextField()
     image = models.ImageField(upload_to='images/projects/')
-    display_on_cv = models.BooleanField(default=False)
-    display_on_portfolio = models.BooleanField(default=False)
+    created_date = models.DateTimeField(default=timezone.now)
+    published_date = models.DateTimeField(blank=True, null=True)
+
+    def publish(self):
+        self.published_date = timezone.now()
+        self.save()
 
     def __str__(self):
         return self.title
@@ -51,6 +54,15 @@ class Skills(models.Model):
 class Job(models.Model):
     title = models.CharField(max_length=50)
     location = models.CharField(max_length=100)
+    date = models.CharField(max_length=50)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.title
+
+
+class CvProject(models.Model):
+    title = models.CharField(max_length=50)
     date = models.CharField(max_length=50)
     description = models.TextField()
 

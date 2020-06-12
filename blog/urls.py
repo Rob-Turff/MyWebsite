@@ -17,4 +17,6 @@ urlpatterns = [
     path('cv/skills/', views.cv_skills_edit, name='skills_edit'),
     path('cv/job/new/', views.cv_job_new, name='job_new'),
     path('cv/job/<int:pk>/', views.cv_job_edit, name='job_edit'),
+    path('cv/project/new/', views.cv_project_new, name='project_new'),
+    path('cv/project/<int:pk>/', views.cv_project_edit, name='project_edit'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
