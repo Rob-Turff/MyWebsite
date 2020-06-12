@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
-from .forms import PostForm, EduForm, SkillsForm, JobForm, CvProjectForm
-from .models import Post, Project, UniYear, Skills, Job, CvProject
+from .forms import PostForm, EduForm, SkillsForm, JobForm, CvProjectForm, AdditionalInfoForm
+from .models import Post, Project, UniYear, Skills, Job, CvProject, AdditionalInfo
 
 
 def home(request):
@@ -66,7 +66,9 @@ def cv_home(request):
     skills = Skills.objects.first()
     jobs = Job.objects.all()
     projects = CvProject.objects.all()
-    return render(request, 'cv/cv_home.html', {'years': years, 'skills': skills, 'jobs': jobs, 'projects': projects})
+    additional_info = AdditionalInfo.objects.first()
+    return render(request, 'cv/cv_home.html', {'years': years, 'skills': skills, 'jobs': jobs, 'projects': projects,
+                                               'additional_info': additional_info})
 
 
 def cv_edu_new(request):
@@ -162,3 +164,23 @@ def cv_project_edit(request, pk):
     else:
         form = CvProjectForm(instance=project)
     return render(request, 'cv/project_edit.html', {'form': form})
+
+
+def cv_additional_info_edit(request):
+    if request.method == "POST":
+        if AdditionalInfo.objects.count() == 1:
+            additional_info_obj = AdditionalInfo.objects.first()
+            form = AdditionalInfoForm(request.POST, instance=additional_info_obj)
+        else:
+            form = AdditionalInfoForm(request.POST)
+        if form.is_valid():
+            additional_info_obj = form.save(commit=False)
+            additional_info_obj.save()
+            return redirect('cv_home')
+    else:
+        if AdditionalInfo.objects.count() == 1:
+            additional_info_obj = AdditionalInfo.objects.first()
+            form = AdditionalInfoForm(instance=additional_info_obj)
+        else:
+            form = AdditionalInfoForm()
+    return render(request, 'cv/additional_info_edit.html', {'form': form})

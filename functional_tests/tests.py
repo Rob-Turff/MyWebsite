@@ -240,7 +240,7 @@ class AdminUserTests(StaticLiveServerTestCase):
         heading = self.browser.find_element_by_tag_name('h2')
         self.assertIn('Additional Info Section', heading.text)
         # Dave enters the details
-        additional_text_input = self.browser.find_element_by_id('text')
+        additional_text_input = self.browser.find_element_by_id('id_text')
         additional_text = 'Full driving license.'
         additional_text_input.send_keys(additional_text)
         self.browser.find_element_by_class_name('save').click()
@@ -252,7 +252,7 @@ class AdminUserTests(StaticLiveServerTestCase):
         self.browser.find_element_by_id('edit-additional-button').click()
         heading = self.browser.find_element_by_tag_name('h2')
         self.assertIn('Additional Info Section', heading.text)
-        additional_text_input = self.browser.find_element_by_id('id_description')
+        additional_text_input = self.browser.find_element_by_id('id_text')
         additional_text_extra = ' Esports is a thing I have done, much wow'
         additional_text_input.send_keys(additional_text_extra)
         self.browser.find_element_by_class_name('save').click()

@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Post, UniYear, Skills, Job, CvProject
+from .models import Post, UniYear, Skills, Job, CvProject, AdditionalInfo
 
 
 class PostForm(forms.ModelForm):
@@ -30,4 +30,10 @@ class JobForm(forms.ModelForm):
 class CvProjectForm(forms.ModelForm):
     class Meta:
         model = CvProject
-        fields = ('title', 'date', 'description')
+        fields = ('title', 'date', 'description',)
+
+
+class AdditionalInfoForm(forms.ModelForm):
+    class Meta:
+        model = AdditionalInfo
+        fields = ('text',)

@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .models import UniYear, Skills, Job, CvProject
+from .models import UniYear, Skills, Job, CvProject, AdditionalInfo
 
 
 class HomePageTest(TestCase):

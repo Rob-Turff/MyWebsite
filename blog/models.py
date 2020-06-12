@@ -68,3 +68,10 @@ class CvProject(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class AdditionalInfo(models.Model):
+    text = models.TextField()
+
+    def __str__(self):
+        return 'Additional Info Section'
