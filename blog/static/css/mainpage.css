@@ -39,9 +39,9 @@ body {
     background-color: #121212;
 }
 
-h1, h2, h3, h4, p, a, i, ul, li {
+h1, h2, h3, h4, h5, p, a, i, ul, li {
     font-family: 'Merriweather', serif;
-    color: white;
+    color: #f8f8f8;
 }
 
 a:hover {
@@ -53,7 +53,7 @@ h1, h2, h3, h4 {
 }
 
 .admin-buttons button {
-    color: white;
+    color: #f8f8f8;
     border: 2px solid white;
     margin: 10px 10px 10px 0px;
     padding: 5px 10px 5px 10px;
@@ -61,9 +61,19 @@ h1, h2, h3, h4 {
 }
 
 .admin-buttons button:hover {
-    background-color: white;
+    background-color: #f8f8f8;
     color: black;
 }
+
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #f8f8f8;
+    margin: 1em 0;
+    padding: 0;
+}
+
 /* --------------------------------------------------------------------------------------------------- */
 /* Blog page css*/
 /* --------------------------------------------------------------------------------------------------- */
@@ -135,4 +145,14 @@ h1, h2, h3, h4 {
 
 .home-sections {
     padding-top: 140px;
+}
+
+/* --------------------------------------------------------------------------------------------------- */
+/* CV page css*/
+/* --------------------------------------------------------------------------------------------------- */
+
+.cv-page {
+    border-radius: 1%;
+    padding: 10px 15px;
+    background-color: #1f1e1e;
 }

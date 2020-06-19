@@ -1,4 +1,4 @@
 Add delete buttons to various models
 Add tests for project model
 Make one base form template?
-Either make project fields required dependant on whether it's displayed on CV or not, or make separate model
+Change some urls to use title's rather than pk

@@ -5,79 +5,102 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Eduction</h1>
-    {% for year in years %}
-        <div class="cv-uni-year">
-            <p><b>{{ year.year }}</b></p>
-            <ul>{{ year.grades|safe }}</ul>
-            <p><b>{{ year.overall_grade|safe }}</b></p>
+    <div class="cv-page">
+        <div class="edu-section">
+            <h1>Eduction</h1>
+            <h4>MSci Computer Science - University of Birmingham (2017 - 2021)</h4>
+            <div class="row">
+                {% for year in years %}
+                    <div class="col">
+                        <p>
+                            <b>{{ year.year }}</b>
+                            {% if user.is_authenticated %}
+                                <a class="admin-buttons" href="{% url 'edu_edit' pk=year.pk %}">
+                                    <button type="button" id="edit-uni-year-button-{{ year.pk }}">Edit Year</button>
+                                </a>
+                            {% endif %}
+                        </p>
+                        <ul>{{ year.grades|safe }}</ul>
+                        <p><b>{{ year.overall_grade|safe }}</b></p>
+                    </div>
+                    {% if forloop.counter|divisibleby:2 %}
+                        </div>
+                        <div class="row">
+                    {% endif %}
+                {% endfor %}
+                </div>
+            {% if user.is_authenticated %}
+                <a class="admin-buttons" href="{% url 'edu_new' %}" id="add-uni-year-button">
+                    <button type="button">Add Year</button>
+                </a>
+            {% endif %}
+            <h4>Furze Platt Senior School - (2009 - 2016)</h4>
+            <p>A-level: A’s in Physics, Maths and Chemistry</p>
+            <p>GCSE: 12 A*-C’s including Maths, English</p>
         </div>
+        <hr/>
+        <h1>Tech Skills</h1>
         {% if user.is_authenticated %}
-            <a class="admin-buttons" href="{% url 'edu_edit' pk=year.pk %}">
-                <button type="button" id="edit-uni-year-button-{{ year.pk }}">Edit Year</button>
+            <a class="admin-buttons" href="{% url 'skills_edit' %}">
+                <button type="button" id="edit-skills-button">Edit Skills</button>
             </a>
         {% endif %}
-    {% endfor %}
-    {% if user.is_authenticated %}
-        <a class="admin-buttons" href="{% url 'edu_new' %}" id="add-uni-year-button">
-            <button type="button">Add Year</button>
-        </a>
-    {% endif %}
-    <h1>Tech Skills</h1>
-    {% if user.is_authenticated %}
-        <a class="admin-buttons" href="{% url 'skills_edit' %}">
-            <button type="button" id="edit-skills-button">Edit Skills</button>
-        </a>
-    {% endif %}
-    <div class="cv-skills">
-        <div class="col">
-            <ul>{{ skills.first_col|safe }}</ul>
+        <div class="cv-skills">
+            <div class="row">
+                <div class="col">
+                    <p>{{ skills.first_col|safe }}</p>
+                </div>
+                <div class="col">
+                    <p>{{ skills.second_col|safe }}</p>
+                </div>
+            </div>
         </div>
-        <div class="col">
-            <ul>{{ skills.second_col|safe }}</ul>
-        </div>
-    </div>
-    <h1>Work Experience</h1>
-    {% for job in jobs %}
-        <div class="cv-job">
-            <p><b>{{ job.location }} - {{ job.title }}({{ job.date }})</b></p>
-            <p>{{ job.description }}</p>
-        </div>
+        <hr/>
+        <h1>Work Experience</h1>
+        {% for job in jobs %}
+            <div class="cv-job">
+                <p><b>{{ job.location }} - {{ job.title }}({{ job.date }})</b></p>
+                <p>{{ job.description }}</p>
+            </div>
+            {% if user.is_authenticated %}
+                <a class="admin-buttons" href="{% url 'job_edit' pk=job.pk %}">
+                    <button type="button" id="edit-job-button-{{ job.pk }}">Edit Job</button>
+                </a>
+            {% endif %}
+        {% endfor %}
         {% if user.is_authenticated %}
-            <a class="admin-buttons" href="{% url 'job_edit' pk=job.pk %}">
-                <button type="button" id="edit-job-button-{{ job.pk }}">Edit Job</button>
+            <a class="admin-buttons" href="{% url 'job_new' %}" id="add-job-button">
+                <button type="button">Add Job</button>
             </a>
         {% endif %}
-    {% endfor %}
-    {% if user.is_authenticated %}
-        <a class="admin-buttons" href="{% url 'job_new' %}" id="add-job-button">
-            <button type="button">Add Job</button>
-        </a>
-    {% endif %}
-    <h1>Academic Projects</h1>
-    {% for project in projects %}
-        <div class="cv-project">
-            <p><b>{{ project.title }}({{ project.date }})</b></p>
-            <p>{{ project.description }}</p>
-        </div>
+        <hr/>
+        <h1>Academic Projects</h1>
+        {% for project in projects %}
+            <div class="cv-project">
+                <p><b>{{ project.title }}({{ project.date }})</b></p>
+                <p>{{ project.description }}</p>
+            </div>
+            {% if user.is_authenticated %}
+                <a class="admin-buttons" href="{% url 'project_edit' pk=project.pk %}">
+                    <button type="button" id="edit-project-button-{{ project.pk }}">Edit Project</button>
+                </a>
+            {% endif %}
+        {% endfor %}
         {% if user.is_authenticated %}
-            <a class="admin-buttons" href="{% url 'project_edit' pk=project.pk %}">
-                <button type="button" id="edit-project-button-{{ project.pk }}">Edit Project</button>
+            <a class="admin-buttons" href="{% url 'project_new' %}" id="add-project-button">
+                <button type="button">Add Project</button>
             </a>
         {% endif %}
-    {% endfor %}
-    {% if user.is_authenticated %}
-        <a class="admin-buttons" href="{% url 'project_new' %}" id="add-project-button">
-            <button type="button">Add Project</button>
-        </a>
-    {% endif %}
-    <h1>Additional Information</h1>
-    {% if user.is_authenticated %}
-        <a class="admin-buttons" href="{% url 'additional_info_edit' %}">
-            <button type="button" id="edit-additional-button">Edit Skills</button>
-        </a>
-    {% endif %}
-    <div class="cv-additional-info">
-        <p>{{ additional_info.text|safe }}</p>
+        <hr/>
+        <h1>Additional Information</h1>
+        {% if user.is_authenticated %}
+            <a class="admin-buttons" href="{% url 'additional_info_edit' %}">
+                <button type="button" id="edit-additional-button">Edit Skills</button>
+            </a>
+        {% endif %}
+        <div class="cv-additional-info">
+            <p>{{ additional_info.text|safe }}</p>
+        </div>
+        <hr/>
     </div>
 {% endblock %}
