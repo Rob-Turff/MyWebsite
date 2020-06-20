@@ -154,5 +154,7 @@ hr {
 .cv-page {
     border-radius: 1%;
     padding: 10px 15px;
+    margin-top: 20px;
+    margin-bottom: 20px;
     background-color: #1f1e1e;
 }
