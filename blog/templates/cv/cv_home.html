@@ -59,7 +59,7 @@
         <h1>Work Experience</h1>
         {% for job in jobs %}
             <div class="cv-job">
-                <p><b>{{ job.location }} - {{ job.title }}({{ job.date }})</b></p>
+                <p><b>{{ job.location }} - {{ job.title }} ({{ job.date }})</b></p>
                 <p>{{ job.description }}</p>
             </div>
             {% if user.is_authenticated %}
@@ -77,8 +77,8 @@
         <h1>Academic Projects</h1>
         {% for project in projects %}
             <div class="cv-project">
-                <p><b>{{ project.title }}({{ project.date }})</b></p>
-                <p>{{ project.description }}</p>
+                <p><b>{{ project.title }} ({{ project.date }})</b></p>
+                <p>{{ project.description | safe }}</p>
             </div>
             {% if user.is_authenticated %}
                 <a class="admin-buttons" href="{% url 'project_edit' pk=project.pk %}">
