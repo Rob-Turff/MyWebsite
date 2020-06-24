@@ -8,6 +8,10 @@ def home(request):
     return render(request, 'mainpage/home.html', {})
 
 
+def contact(request):
+    return render(request, 'mainpage/contact.html', {})
+
+
 def post_list(request):
     posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
     return render(request, 'blog/post_list.html', {'posts': posts})
@@ -150,7 +154,7 @@ def cv_project_new(request):
             return redirect('cv_home')
     else:
         form = CvProjectForm()
-    return render(request, 'cv/project_edit.html', {'form': form})
+    return render(request, 'cv/templates/portfolio/cv_project_edit.html', {'form': form})
 
 
 def cv_project_edit(request, pk):
@@ -163,7 +167,7 @@ def cv_project_edit(request, pk):
             return redirect('cv_home')
     else:
         form = CvProjectForm(instance=project)
-    return render(request, 'cv/project_edit.html', {'form': form})
+    return render(request, 'cv/templates/portfolio/cv_project_edit.html', {'form': form})
 
 
 def cv_additional_info_edit(request):

@@ -40,7 +40,8 @@ body {
 }
 
 h1, h2, h3, h4, h5, p, a, i, ul, li {
-    font-family: 'Merriweather', serif;
+    /*font-family: 'Merriweather', serif;*/
+    font-family: 'Roboto', sans-serif;
     color: #f8f8f8;
 }
 
@@ -49,7 +50,7 @@ a:hover {
 }
 
 h1, h2, h3, h4 {
-    font-weight: bold;
+    font-weight: 500;
 }
 
 .admin-buttons button {
@@ -92,7 +93,7 @@ hr {
     background-color: #262626;
     margin-bottom: 30px;
     padding: 20px 20px 20px 20px;
-    border: 5px solid #7e8ce0;
+    border: 5px solid #ff943f;
     border-radius: 20px;
 }
 
@@ -113,6 +114,10 @@ hr {
     color: #828282;
 }
 
+.post-detail {
+    padding-top: 50px;
+}
+
 /* --------------------------------------------------------------------------------------------------- */
 /* Project page css*/
 /* --------------------------------------------------------------------------------------------------- */
@@ -124,16 +129,19 @@ hr {
 }
 
 .project-list-button button {
-    color: #005399;
-    border-color: #005399;
+    color: #f8f8f8;
+    border-color: #ff943f;
 }
 
 .project-list-button button:hover {
-    background-color: #084968;
+    background-color: #3d3d3d;
+    border-color: #ff943f;
 }
 
 .btn-outline-primary:not(:disabled):not(.disabled).active {
-    background-color: #084968;
+    color: #f8f8f8;
+    background-color: #3d3d3d;
+    border-color: #ff943f;
 }
 
 .project-list-content {
@@ -143,8 +151,39 @@ hr {
 /* Home page css*/
 /* --------------------------------------------------------------------------------------------------- */
 
-.home-sections {
+.about-section {
     padding-top: 140px;
+    padding-left: 12vw;
+    padding-right: 12vw;
+    text-align: center;
+}
+
+.about-section img {
+    padding-bottom: 15px;
+    border-radius: 50%;
+}
+
+.about-section h1 {
+    font-size: 60px;
+    padding-bottom: 10px;
+}
+
+.about-section p {
+    font-size: 32px;
+}
+
+.about-section button {
+    padding-bottom: 10px;
+    padding-right: 20px;
+    padding-left: 20px;
+    font-size: 36px;
+    border-color: #ff943f;
+    color: #f8f8f8;
+}
+
+.about-section button:hover {
+    background-color: #3d3d3d;
+    border-color: #ff943f;
 }
 
 /* --------------------------------------------------------------------------------------------------- */
@@ -153,7 +192,7 @@ hr {
 
 .cv-page {
     border-radius: 1%;
-    padding: 10px 15px;
+    padding: 30px 50px;
     margin-top: 20px;
     margin-bottom: 20px;
     background-color: #1f1e1e;

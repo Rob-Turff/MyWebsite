@@ -192,12 +192,12 @@ class CvProjectSectionTest(TestCase):
 
     def test_project_page_returns_correct_html(self):
         response = self.client.get('/cv/project/new/')
-        self.assertTemplateUsed(response, 'cv/project_edit.html')
+        self.assertTemplateUsed(response, 'cv/cv_project_edit.html')
 
     def test_edit_project_page_returns_correct_html(self):
         self.add_project_to_database(self.project_title, self.project_date, self.project_description)
         response = self.client.get('/cv/project/1/')
-        self.assertTemplateUsed(response, 'cv/project_edit.html')
+        self.assertTemplateUsed(response, 'cv/cv_project_edit.html')
 
     def test_project_page_can_save_POST_request(self):
         self.add_project_to_database(self.project_title, self.project_date, self.project_description)

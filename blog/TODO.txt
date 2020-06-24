@@ -2,3 +2,4 @@ Add delete buttons to various models
 Add tests for project model
 Make one base form template?
 Change some urls to use title's rather than pk
+Allow changing the order of projects and jobs on page
