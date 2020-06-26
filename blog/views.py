@@ -1,17 +1,16 @@
+from django.core.mail import send_mail, BadHeaderError, EmailMessage
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
-from .forms import PostForm, EduForm, SkillsForm, JobForm, CvProjectForm, AdditionalInfoForm
+
+from mysite.settings import EMAIL_HOST_USER
+from .forms import PostForm, EduForm, SkillsForm, JobForm, CvProjectForm, AdditionalInfoForm, ContactForm
 from .models import Post, Project, UniYear, Skills, Job, CvProject, AdditionalInfo
 from django.contrib.auth.decorators import login_required
 
 
 def home(request):
     return render(request, 'mainpage/home.html', {})
-
-
-def contact(request):
-    return render(request, 'mainpage/contact.html', {})
-
 
 def post_list(request):
     posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
@@ -21,6 +20,7 @@ def post_list(request):
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
     return render(request, 'blog/post_detail.html', {'post': post})
+
 
 @login_required
 def post_new(request):
@@ -35,6 +35,7 @@ def post_new(request):
     else:
         form = PostForm()
     return render(request, 'blog/post_edit.html', {'form': form})
+
 
 @login_required
 def post_edit(request, pk):
@@ -75,6 +76,7 @@ def cv_home(request):
     return render(request, 'cv/cv_home.html', {'years': years, 'skills': skills, 'jobs': jobs, 'projects': projects,
                                                'additional_info': additional_info})
 
+
 @login_required
 def cv_edu_new(request):
     if request.method == "POST":
@@ -86,6 +88,7 @@ def cv_edu_new(request):
     else:
         form = EduForm()
     return render(request, 'cv/edu_edit.html', {'form': form})
+
 
 @login_required
 def cv_edu_edit(request, pk):
@@ -99,6 +102,7 @@ def cv_edu_edit(request, pk):
     else:
         form = EduForm(instance=uni_year)
     return render(request, 'cv/edu_edit.html', {'form': form})
+
 
 @login_required
 def cv_skills_edit(request):
@@ -120,6 +124,7 @@ def cv_skills_edit(request):
             form = SkillsForm()
     return render(request, 'cv/skills_edit.html', {'form': form})
 
+
 @login_required
 def cv_job_new(request):
     if request.method == "POST":
@@ -131,6 +136,7 @@ def cv_job_new(request):
     else:
         form = JobForm()
     return render(request, 'cv/job_edit.html', {'form': form})
+
 
 @login_required
 def cv_job_edit(request, pk):
@@ -145,6 +151,7 @@ def cv_job_edit(request, pk):
         form = JobForm(instance=job)
     return render(request, 'cv/job_edit.html', {'form': form})
 
+
 @login_required
 def cv_project_new(request):
     if request.method == "POST":
@@ -156,6 +163,7 @@ def cv_project_new(request):
     else:
         form = CvProjectForm()
     return render(request, 'cv/templates/portfolio/cv_project_edit.html', {'form': form})
+
 
 @login_required
 def cv_project_edit(request, pk):
@@ -169,6 +177,7 @@ def cv_project_edit(request, pk):
     else:
         form = CvProjectForm(instance=project)
     return render(request, 'cv/templates/portfolio/cv_project_edit.html', {'form': form})
+
 
 @login_required
 def cv_additional_info_edit(request):
@@ -189,3 +198,20 @@ def cv_additional_info_edit(request):
         else:
             form = AdditionalInfoForm()
     return render(request, 'cv/additional_info_edit.html', {'form': form})
+
+
+def contact_page(request):
+    if request.method == 'GET':
+        form = ContactForm()
+    else:
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            subject = form.cleaned_data['subject']
+            email = form.cleaned_data['email']
+            message = form.cleaned_data['message']
+            try:
+                EmailMessage(subject, message, EMAIL_HOST_USER, [EMAIL_HOST_USER], headers={'Reply-To': email}).send()
+            except BadHeaderError:
+                return HttpResponse('Invalid header found.')
+            return redirect('home')
+    return render(request, "mainpage/contact.html", {'form': form})

@@ -58,7 +58,7 @@ h1, h2, h3, h4 {
     border: 2px solid white;
     margin: 10px 10px 10px 0px;
     padding: 5px 10px 5px 10px;
-    background-color: rgba(255,169,43,0);
+    background-color: rgba(255, 169, 43, 0);
 }
 
 .admin-buttons button:hover {
@@ -147,6 +147,7 @@ hr {
 .project-list-content {
     padding-top: 20vh;
 }
+
 /* --------------------------------------------------------------------------------------------------- */
 /* Home page css*/
 /* --------------------------------------------------------------------------------------------------- */
@@ -196,4 +197,28 @@ hr {
     margin-top: 20px;
     margin-bottom: 20px;
     background-color: #1f1e1e;
+}
+
+/* --------------------------------------------------------------------------------------------------- */
+/* Contact page css*/
+/* --------------------------------------------------------------------------------------------------- */
+
+.contact-form {
+    margin: 100px 15vw 0px 15vw
+}
+
+.contact-form button {
+    color: #f8f8f8;
+    border-color: #ff943f;
+}
+
+.contact-form button:hover {
+    background-color: #3d3d3d;
+    border-color: #ff943f;
+}
+
+.contact-form:not(:disabled):not(.disabled).active {
+    color: #f8f8f8;
+    background-color: #3d3d3d;
+    border-color: #ff943f;
 }
