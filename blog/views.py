@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from .forms import PostForm, EduForm, SkillsForm, JobForm, CvProjectForm, AdditionalInfoForm
 from .models import Post, Project, UniYear, Skills, Job, CvProject, AdditionalInfo
+from django.contrib.auth.decorators import login_required
 
 
 def home(request):
@@ -21,7 +22,7 @@ def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
     return render(request, 'blog/post_detail.html', {'post': post})
 
-
+@login_required
 def post_new(request):
     if request.method == "POST":
         form = PostForm(request.POST)
@@ -35,7 +36,7 @@ def post_new(request):
         form = PostForm()
     return render(request, 'blog/post_edit.html', {'form': form})
 
-
+@login_required
 def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == "POST":
@@ -74,7 +75,7 @@ def cv_home(request):
     return render(request, 'cv/cv_home.html', {'years': years, 'skills': skills, 'jobs': jobs, 'projects': projects,
                                                'additional_info': additional_info})
 
-
+@login_required
 def cv_edu_new(request):
     if request.method == "POST":
         form = EduForm(request.POST)
@@ -86,7 +87,7 @@ def cv_edu_new(request):
         form = EduForm()
     return render(request, 'cv/edu_edit.html', {'form': form})
 
-
+@login_required
 def cv_edu_edit(request, pk):
     uni_year = get_object_or_404(UniYear, pk=pk)
     if request.method == "POST":
@@ -99,7 +100,7 @@ def cv_edu_edit(request, pk):
         form = EduForm(instance=uni_year)
     return render(request, 'cv/edu_edit.html', {'form': form})
 
-
+@login_required
 def cv_skills_edit(request):
     if request.method == "POST":
         if Skills.objects.count() == 1:
@@ -119,7 +120,7 @@ def cv_skills_edit(request):
             form = SkillsForm()
     return render(request, 'cv/skills_edit.html', {'form': form})
 
-
+@login_required
 def cv_job_new(request):
     if request.method == "POST":
         form = JobForm(request.POST)
@@ -131,7 +132,7 @@ def cv_job_new(request):
         form = JobForm()
     return render(request, 'cv/job_edit.html', {'form': form})
 
-
+@login_required
 def cv_job_edit(request, pk):
     job = get_object_or_404(Job, pk=pk)
     if request.method == "POST":
@@ -144,7 +145,7 @@ def cv_job_edit(request, pk):
         form = JobForm(instance=job)
     return render(request, 'cv/job_edit.html', {'form': form})
 
-
+@login_required
 def cv_project_new(request):
     if request.method == "POST":
         form = CvProjectForm(request.POST)
@@ -156,7 +157,7 @@ def cv_project_new(request):
         form = CvProjectForm()
     return render(request, 'cv/templates/portfolio/cv_project_edit.html', {'form': form})
 
-
+@login_required
 def cv_project_edit(request, pk):
     project = get_object_or_404(CvProject, pk=pk)
     if request.method == "POST":
@@ -169,7 +170,7 @@ def cv_project_edit(request, pk):
         form = CvProjectForm(instance=project)
     return render(request, 'cv/templates/portfolio/cv_project_edit.html', {'form': form})
 
-
+@login_required
 def cv_additional_info_edit(request):
     if request.method == "POST":
         if AdditionalInfo.objects.count() == 1:
