@@ -32,6 +32,7 @@ class AdminUserTests(StaticLiveServerTestCase):
         # Dave, being an absolutely spiffing individual decides that he wants to make a post about yorkshire tea gold
         # and so presses the blog button in the top navigation bar
         self.browser.find_element_by_id('topnav-blog-button').click()
+        time.sleep(0.25)
         # He then checks the title of the page to make sure he is the right place because Dave hasn't had his
         # standard 15 cups of tea today and so is being extra careful
         self.assertIn('Blog | Robert Turff', self.browser.title)
@@ -44,8 +45,7 @@ class AdminUserTests(StaticLiveServerTestCase):
         titleInput = self.browser.find_element_by_id('id_title')
         title = 'One tea to rule them all'
         titleInput.send_keys(title)
-        # Dave enters the text "One tea to rule them all, One man to find them, One mug to
-        # bring them all and in the darkness bind them" and then clicks the save button
+        # Dave enters some text and then clicks the save button
         textInput = self.browser.find_element_by_id('id_text')
         text = 'One tea to rule them all, One man to find them, One mug to bring them all and in the darkness bind them'
         textInput.send_keys(text)
@@ -71,6 +71,28 @@ class AdminUserTests(StaticLiveServerTestCase):
         self.assertTrue(any(title in t.text for t in titlesOnPage))
         pTextOnPage = self.browser.find_elements_by_tag_name('p')
         self.assertTrue(any(text in t.text for t in pTextOnPage))
+
+    def test_can_delete_blog_post(self):
+        self.browser.get(self.live_server_url)
+        # Dave during a moment of madness decides to write a post about coffee
+        self.browser.find_element_by_id('topnav-blog-button').click()
+        self.browser.find_element_by_id('new-post-button').click()
+        titleInput = self.browser.find_element_by_id('id_title')
+        title = 'Coffee is great!'
+        titleInput.send_keys(title)
+        textInput = self.browser.find_element_by_id('id_text')
+        text = 'Coffee is still great'
+        textInput.send_keys(text)
+        self.browser.find_element_by_class_name('save').click()
+        time.sleep(0.25)
+        # Dave comes to his senses realising the heresy he has written and deletes the post
+        self.browser.find_element_by_id('delete-post-button').click()
+        self.browser.find_element_by_id('confirm-delete-button').click()
+        # Dave checks to make sure he has removed all traces of his heretical post
+        titlesOnPage = self.browser.find_elements_by_tag_name('h2')
+        self.assertFalse(any(title in t.text for t in titlesOnPage))
+        pTextOnPage = self.browser.find_elements_by_tag_name('p')
+        self.assertFalse(any(text in t.text for t in pTextOnPage))
 
     def test_can_navigate_to_cv_page_and_edit_education_section(self):
         # Dave navigates to the home page of the website

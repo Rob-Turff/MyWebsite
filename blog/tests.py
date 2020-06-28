@@ -1,5 +1,8 @@
+from django.contrib.auth.models import User
 from django.test import TestCase
-from .models import UniYear, Skills, Job, CvProject, AdditionalInfo
+from django.utils import timezone
+
+from .models import UniYear, Skills, Job, CvProject, AdditionalInfo, Post
 
 
 class HomePageTest(TestCase):
@@ -8,10 +11,82 @@ class HomePageTest(TestCase):
         self.assertTemplateUsed(response, 'mainpage/home.html')
 
 
+class BlogPageTest(TestCase):
+    title = 'Test title'
+    text = 'Test text'
+    date = timezone.now
+
+    def setUp(self):
+        User.objects.create_superuser('testuser', 'testuser@test.com', 'password')
+        self.client.login(username='testuser', password='password')
+
+    def add_post_to_database(self):
+        response = self.client.post('/post/new/', data={'author': self.client, 'title': self.title, 'text': self.text,
+                                                        'created_date': self.date, 'published_date': self.date})
+        self.assertEqual(response.status_code, 302)
+
+    def edit_post_in_database(self, title, text, pk):
+        response = self.client.post('/post/' + str(pk) + '/edit/',
+                                    data={'author': self.client, 'title': title, 'text': text,
+                                          'created_date': self.date, 'published_date': self.date})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['location'], '/post/' + str(pk) + '/')
+
+    def check_post_saved_correctly(self, title, text):
+        response = self.client.get('/blog').content.decode()
+        self.assertIn(title, response)
+        self.assertIn(text, response)
+
+    def test_add_post_page_returns_correct_html(self):
+        response = self.client.get('/post/new/')
+        self.assertTemplateUsed(response, 'blog/post_edit.html')
+
+    def test_can_add_post(self):
+        self.add_post_to_database()
+        self.check_post_saved_correctly(self.title, self.text)
+
+    def test_post_page_returns_correct_html(self):
+        self.add_post_to_database()
+        response = self.client.get('/post/1/')
+        self.assertTemplateUsed(response, 'blog/post_detail.html')
+
+    def test_edit_post_page_returns_correct_html(self):
+        self.add_post_to_database()
+        response = self.client.get('/post/1/edit/')
+        self.assertTemplateUsed(response, 'blog/post_edit.html')
+
+    def test_edit_post_saves_changes(self):
+        extra_text = 'blarg'
+        self.add_post_to_database()
+        self.edit_post_in_database(self.title, self.text + extra_text, 1)
+        self.check_post_saved_correctly(self.title, self.text + extra_text)
+
+    def test_can_delete_post(self):
+        self.add_post_to_database()
+        self.client.delete('/post/1/')
+        response = self.client.get('/blog').content.decode()
+        self.assertNotIn(self.title, response)
+        self.assertNotIn(self.text, response)
+
+    def test_edu_num_database_entries_correct(self):
+        extra_text = ' yes'
+        self.assertEqual(Post.objects.count(), 0)
+        self.add_post_to_database()
+        self.assertEqual(Post.objects.count(), 1)
+        self.edit_post_in_database(self.title, self.text + extra_text, 1)
+        self.assertEqual(Post.objects.count(), 1)
+        self.client.delete('/post/1/')
+        self.assertEqual(Post.objects.count(), 0)
+
+
 class CvEduSectionTest(TestCase):
     year = 'First Year'
     grades = 'Many good grades yes yes'
     overall_grade = 'Best grade yes yes'
+
+    def setUp(self):
+        User.objects.create_superuser('testuser', 'testuser@test.com', 'password')
+        self.client.login(username='testuser', password='password')
 
     def add_year_to_database(self, year, grades, overall_grade):
         response = self.client.post('/cv/edu/new/',
@@ -67,6 +142,10 @@ class CvSkillsSectionTest(TestCase):
     skills_col_1 = 'Many many skills to be had here'
     skills_col_2 = 'Even more over this side'
 
+    def setUp(self):
+        User.objects.create_superuser('testuser', 'testuser@test.com', 'password')
+        self.client.login(username='testuser', password='password')
+
     def add_skills_to_database(self, skills_col_1, skills_col_2):
         response = self.client.post('/cv/skills/',
                                     data={'first_col': skills_col_1, 'second_col': skills_col_2})
@@ -112,6 +191,10 @@ class CvJobSectionTest(TestCase):
     job_location = 'Trusty Teapot, Teatown'
     job_date = 'August 2019 - Now'
     job_description = 'Tasted lots of tea, gained a new appreciation for teas other than yorkshire tea gold!'
+
+    def setUp(self):
+        User.objects.create_superuser('testuser', 'testuser@test.com', 'password')
+        self.client.login(username='testuser', password='password')
 
     def add_job_to_database(self, title, location, date, description):
         response = self.client.post('/cv/job/new/',
@@ -170,6 +253,10 @@ class CvProjectSectionTest(TestCase):
     project_date = 'May 2020 - Present'
     project_description = 'Built the website using the Django framework for coursework set by uni'
 
+    def setUp(self):
+        User.objects.create_superuser('testuser', 'testuser@test.com', 'password')
+        self.client.login(username='testuser', password='password')
+
     def add_project_to_database(self, title, date, description):
         response = self.client.post('/cv/project/new/',
                                     data={'title': title, 'date': date,
@@ -221,6 +308,10 @@ class CvProjectSectionTest(TestCase):
 
 class CvAdditionalInfoSectionTest(TestCase):
     text = 'Lots of additional information here'
+
+    def setUp(self):
+        User.objects.create_superuser('testuser', 'testuser@test.com', 'password')
+        self.client.login(username='testuser', password='password')
 
     def add_additional_info_to_database(self, text):
         response = self.client.post('/cv/additional_info/',

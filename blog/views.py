@@ -18,8 +18,12 @@ def post_list(request):
 
 
 def post_detail(request, pk):
-    post = get_object_or_404(Post, pk=pk)
-    return render(request, 'blog/post_detail.html', {'post': post})
+    if request.method == "DELETE":
+        Post.objects.get(pk=pk).delete()
+        return redirect('/blog')
+    else:
+        post = get_object_or_404(Post, pk=pk)
+        return render(request, 'blog/post_detail.html', {'post': post})
 
 
 @login_required
@@ -162,7 +166,7 @@ def cv_project_new(request):
             return redirect('cv_home')
     else:
         form = CvProjectForm()
-    return render(request, 'cv/templates/portfolio/cv_project_edit.html', {'form': form})
+    return render(request, 'cv/cv_project_edit.html', {'form': form})
 
 
 @login_required
@@ -176,7 +180,7 @@ def cv_project_edit(request, pk):
             return redirect('cv_home')
     else:
         form = CvProjectForm(instance=project)
-    return render(request, 'cv/templates/portfolio/cv_project_edit.html', {'form': form})
+    return render(request, 'cv/cv_project_edit.html', {'form': form})
 
 
 @login_required
