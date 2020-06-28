@@ -63,7 +63,7 @@ class BlogPageTest(TestCase):
 
     def test_can_delete_post(self):
         self.add_post_to_database()
-        self.client.delete('/post/1/')
+        self.client.post('/post/1/delete/')
         response = self.client.get('/blog').content.decode()
         self.assertNotIn(self.title, response)
         self.assertNotIn(self.text, response)
@@ -75,7 +75,7 @@ class BlogPageTest(TestCase):
         self.assertEqual(Post.objects.count(), 1)
         self.edit_post_in_database(self.title, self.text + extra_text, 1)
         self.assertEqual(Post.objects.count(), 1)
-        self.client.delete('/post/1/')
+        self.client.post('/post/1/delete/')
         self.assertEqual(Post.objects.count(), 0)
 
 

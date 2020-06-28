@@ -87,6 +87,10 @@ class AdminUserTests(StaticLiveServerTestCase):
         time.sleep(0.25)
         # Dave comes to his senses realising the heresy he has written and deletes the post
         self.browser.find_element_by_id('delete-post-button').click()
+        # Dave is sure he wants to delete the post so clicks the confirm button
+        time.sleep(0.25)
+        page_title = self.browser.find_element_by_tag_name('h2')
+        self.assertIn('Delete Post', page_title.text)
         self.browser.find_element_by_id('confirm-delete-button').click()
         # Dave checks to make sure he has removed all traces of his heretical post
         titlesOnPage = self.browser.find_elements_by_tag_name('h2')

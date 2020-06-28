@@ -7,17 +7,20 @@
 {% block content %}
     <div class="post-detail">
         <div class="post">
+            {% if user.is_authenticated %}
+                <div class="admin-buttons post-admin-buttons">
+                    <form action="{% url 'post_delete' pk=post.pk %}">
+                        <button id="delete-post-button" type="submit">Delete Post</button>
+                    </form>
+                    <form action="{% url 'post_edit' pk=post.pk %}">
+                        <button id="edit-post-button">Edit Post</button>
+                    </form>
+                </div>
+            {% endif %}
             {% if post.published_date %}
                 <div class="date" style="display:inline-block">
                     <p>{{ post.published_date }}</p>
                 </div>
-            {% endif %}
-            {% if user.is_authenticated %}
-                <a class="admin-buttons" href="{% url 'post_edit' pk=post.pk %}">
-                    <button type="button" style="display:inline-block; float:right; margin: -10px -10px"
-                            id="edit-post-button">Edit Post
-                    </button>
-                </a>
             {% endif %}
             <h2>{{ post.title }}</h2>
             <p>{{ post.text|linebreaksbr }}</p>
