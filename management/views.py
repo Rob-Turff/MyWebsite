@@ -10,7 +10,11 @@ from management.models import StaticIp
 def display_ip(request):
     if request.method == "POST":
         title = request.POST.get("title")
-        ip = request.META.get("REMOTE_ADDR")
+        x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(",")[0]
+        else:
+            ip = request.META.get("REMOTE_ADDR")
         try:
             static_ip = StaticIp.objects.get(title=title)
             static_ip.ip = ip
