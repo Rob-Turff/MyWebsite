@@ -9,9 +9,9 @@ from rest_framework_api_key.permissions import HasAPIKey
 
 from management.models import StaticIp
 
+
 class DisplayIP(APIView):
     permission_classes = [HasAPIKey | IsAuthenticated]
-    authentication_classes = []
 
     @csrf_exempt
     def get(self, request):
