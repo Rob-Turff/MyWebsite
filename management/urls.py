@@ -1,7 +1,9 @@
 from django.urls import path
 from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+
 from . import views
 
 urlpatterns = [
-    path('ip', views.display_ip, name='display_ip'),
+    path('ip', csrf_exempt(views.DisplayIP.as_view()), name='display_ip'),
 ]

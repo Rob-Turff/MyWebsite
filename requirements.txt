@@ -1,6 +1,9 @@
-Django~=2.2.4
-Pillow~=7.1.2
-selenium==3.141.0
+Django==2.2.14
 django-widget-tweaks==1.4.8
-pip~=19.2.3
-setuptools~=41.2.0
+djangorestframework==3.11.0
+djangorestframework-api-key==2.0.0
+Pillow==7.1.2
+pytz==2020.1
+selenium==3.141.0
+sqlparse==0.3.1
+urllib3==1.25.9

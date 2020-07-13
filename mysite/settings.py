@@ -35,6 +35,8 @@ INSTALLED_APPS = [
     'blog.apps.BlogConfig',
     'management.apps.ManagementConfig',
     'widget_tweaks',
+    'rest_framework',
+    'rest_framework_api_key',
 ]
 
 MIDDLEWARE = [
